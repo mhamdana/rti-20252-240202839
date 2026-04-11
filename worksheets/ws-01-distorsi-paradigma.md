@@ -106,27 +106,28 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 
 | Perspektif | Analisis |
 |------------|---------|
-| Kejujuran ilmiah | *Contoh: Laporkan kedua versi (dengan dan tanpa outlier)* |
-| Transparansi | |
-| Peer review | |
+| Kejujuran ilmiah | Peneliti harus tetap melaporkan temuan asli termasuk data outlier tersebut, karena menyembunyikan data demi hasil yang signifikan merupakan bentuk manipulasi informasi. |
+| Transparansi | Peneliti wajib memaparkan kriteria objektif dalam pembersihan data di bab metodologi sehingga pembaca tahu apakah penghapusan data didasarkan pada kesalahan instrumen atau hanya keinginan subjektif. |
+| Peer review | Penelaah (reviewer) memerlukan data yang jujur untuk menguji ketangguhan (robustness) metode; jika outlier dihapus tanpa alasan valid, maka validitas temuan tersebut patut dipertanyakan. |
 
 **Keputusan akhir dan justifikasi:**
-> ___________________________________________________
+> Keputusan: Peneliti harus melaporkan hasil analisis dalam dua versi (dengan outlier dan tanpa outlier).
+Justifikasi: Mengikuti prinsip kejujuran ilmiah, melaporkan kedua kondisi tersebut mencegah terjadinya distorsi pada tahap Analysis dan Inference. Hal ini memberikan gambaran yang jujur kepada pembaca mengenai batasan performa algoritma (Naive Bayes/SVM) ketika menghadapi anomali data, sesuai dengan temuan Novita Sari yang secara transparan melaporkan perbedaan akurasi yang kontras antara data Bahasa Indonesia dan Inggris.
 
 ---
 
 ## Latihan 3 — Posisi Paradigma
 
-**Topik riset:** ________________________________________
+**Topik riset:** Penerapan Algoritma Klasifikasi Naive Bayes dan Support Vector Machine untuk Analisis Sentimen Cyberbullying Bilingual di Aplikasi X.
 
 | Kriteria | Positivis | Interpretivis | Design Science |
 |----------|-----------|---------------|----------------|
-| Kesesuaian dengan topik (1–5) | *Contoh: 4* | *Contoh: 2* | *Contoh: 5* |
-| Jenis data yang dikumpulkan | | | |
-| Limitasi paradigma | | | |
+| Kesesuaian dengan topik (1–5) | 4 | 2 | 5 |
+| Jenis data yang dikumpulkan | Data kuantitatif berupa nilai akurasi (87%), precision, dan recall. | Pemahaman kontekstual terhadap ulasan teks pengguna. | Artefak berupa model sistem klasifikasi sentimen otomatis. |
+| Limitasi paradigma | Angka statistik tidak bisa menjelaskan motif psikologis pelaku bullying. | Sangat sulit untuk mengklasifikasi ribuan data tweet secara manual. | Terlalu fokus pada efektivitas alat deteksi daripada solusi sosialnya. |
 
-**Paradigma yang dipilih:** _____________________________
-**Alasan:** ____________________________________________
+**Paradigma yang dipilih:** Design Science Research
+**Alasan:** Riset ini berfokus pada pengembangan sebuah artefak teknologi (model klasifikasi) sebagai solusi praktis untuk mendeteksi cyberbullying. Proses pengembangannya dilakukan melalui tahapan yang sistematis (Gambar 1) dan dievaluasi kinerjanya menggunakan standar objektif.
 
 ---
 
