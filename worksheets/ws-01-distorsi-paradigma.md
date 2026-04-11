@@ -81,22 +81,22 @@ Tanggal          : ____________________
 Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan performa." Telusuri setiap tahap Research Trust Model.
 
 **Paper yang dipilih:**
-> Judul: _______________________________________________
-> Penulis (Tahun): ______________________________________
+> Judul: _Penerapan Algoritma Klasifikasi Naive Bayes dan Support Vector Machine untuk Analisis Sentimen Cyberbullying Bilingual di Aplikasi X.
+> Penulis (Tahun): Novita Sari (2025).
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
 | Reality → Data | Mengumpulkan data tweet terbaru dari aplikasi X menggunakan teknik crawling dengan kata kunci "Cyberbullying". | Sampling Bias: Hanya mengambil tweet yang mengandung kata kunci spesifik; tweet bullying yang menggunakan bahasa sarkasme tanpa kata kunci tersebut tidak tertangkap. |
-| Data → Processing | | |
-| Processing → Analysis | | |
-| Analysis → Inference | | |
-| Inference → Knowledge | | |
+| Data → Processing | Melakukan pembersihan data (cleaning), penyeragaman huruf (case folding), penghapusan kata umum (stopword), dan stemming. | Semantic Distortion: Proses stemming pada bahasa Indonesia seringkali menghilangkan imbuhan penting yang bisa mengubah nada atau makna asli dari sebuah keluhan atau hinaan. |
+| Processing → Analysis | Menggunakan metode TF-IDF untuk pembobotan kata dan memberikan label sentimen secara otomatis menggunakan library TextBlob. | Labeling Bias: Penggunaan library otomatis (TextBlob) untuk bahasa Indonesia sering kurang akurat dibandingkan pelabelan manual karena keterbatasan kamus bahasa gaul/lokal. |
+| Analysis → Inference | Membandingkan performa akurasi antara algoritma Naive Bayes dan SVM untuk data bilingual. | Assumptive Bias: Naive Bayes mengasumsikan setiap kata berdiri sendiri (independen), padahal dalam cyberbullying, urutan kata sangat menentukan apakah itu hinaan atau bukan. |
+| Inference → Knowledge | Menyimpulkan Naive Bayes lebih unggul (87%) dibanding SVM (86%) untuk klasifikasi sentimen bilingual. | Overgeneralization: Klaim keunggulan ini mungkin hanya berlaku pada dataset kecil (502 data Indonesia) dan belum tentu stabil jika diterapkan pada jutaan data real-time. |
 
-**Distorsi paling besar di tahap:** ________________________
+**Distorsi paling besar di tahap:** Data → Processing.
 
 **Dua distorsi spesifik yang teridentifikasi:**
-1. ___________________________________________________
-2. ___________________________________________________
+1. Context Loss (Bilingual): Proses penerjemahan atau pengolahan data bilingual berisiko menghilangkan konteks budaya lokal Indonesia yang sulit diterjemahkan secara harfiah ke model mesin.
+2. Algorithm Simplification: Penggunaan Naive Bayes yang "naif" mendistorsi kompleksitas bahasa manusia yang seharusnya saling berkaitan antar kata dalam satu kalimat bullying.
 
 ---
 
