@@ -136,5 +136,6 @@ Justifikasi: Mengikuti prinsip kejujuran ilmiah, melaporkan kedua kondisi terseb
 > Sebelum membaca materi ini, apakah pernah mempertanyakan klaim "95% akurat"? Setelah memahami rantai distorsi, pertanyaan apa yang sekarang akan diajukan saat membaca paper?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Sebelumnya, saya cenderung skeptis terhadap klaim akurasi tinggi karena hasil tersebut seringkali tidak berlaku umum di setiap situasi. Melalui pemahaman tentang rantai distorsi, saya menyadari bahwa meskipun komputer memiliki presisi tinggi, hasil akhirnya sangat bergantung pada bagaimana data tersebut dipilih dan dimodifikasi pada tahap Processing.
+> Setelah memahami rantai distorsi, pertanyaan yang akan saya ajukan saat membaca paper adalah:
+> "Bagaimana karakteristik asli data mentah yang digunakan dan di titik mana algoritma ini mengalami kegagalan atau penurunan akurasi?".
