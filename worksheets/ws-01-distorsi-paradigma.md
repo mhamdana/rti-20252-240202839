@@ -83,6 +83,7 @@ Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan perfor
 **Paper yang dipilih:**
 > Judul: _Penerapan Algoritma Klasifikasi Naive Bayes dan Support Vector Machine untuk Analisis Sentimen Cyberbullying Bilingual di Aplikasi X.
 > Penulis (Tahun): Novita Sari (2025).
+> Link: https://repository.uin-suska.ac.id/85934/1/LAPORAN%20REPOSITORY%20NOVITA%20SARI.pdf
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
