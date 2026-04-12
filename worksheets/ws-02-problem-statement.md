@@ -106,14 +106,14 @@ Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Pro
 
 | Tahap | Hasil |
 |-------|-------|
-| Reality | Masyarakat sering merasa estimasi waktu di aplikasi ojek online tidak akurat saat macet. |
-| Observed Issue (Symptom) | Terjadi delay kedatangan driver yang signifikan dibandingkan angka di aplikasi. |
-| Diagnosed Problem (Root Cause) | Model gagal memprediksi perlambatan di titik-titik putar balik (U-Turn) yang padat. |
-| Researchable Problem | Analisis pengaruh penambahan variabel "U-Turn Penalty" pada algoritma rute terhadap akurasi ETA. |
-| Measurable Variable | Selisih waktu (menit) dan RMSE (Root Mean Square Error). |
+| Reality | Masyarakat sering merasa estimasi waktu di aplikasi ojek online tidak akurat saat macet |
+| Observed Issue (Symptom) | Terjadi delay kedatangan driver yang signifikan dibandingkan angka di aplikasi |
+| Diagnosed Problem (Root Cause) | Model gagal memprediksi perlambatan di titik-titik putar balik (U-Turn) yang padat |
+| Researchable Problem | Analisis pengaruh penambahan variabel "U-Turn Penalty" pada algoritma rute terhadap akurasi ETA |
+| Measurable Variable | Selisih waktu (menit) dan RMSE (Root Mean Square Error) |
 
 **Apakah terjebak solution-first thinking?** [ ] Ya / [ ] Tidak
-> Jika ya, kembali ke tahap mana? ________________________
+> Jika ya, kembali ke tahap mana? Tidak, karena analisis dimulai dari gejala keterlambatan di lapangan.
 
 ---
 
@@ -123,14 +123,14 @@ Gambarkan konteks sistem dari masalah riset di Latihan 1.
 
 | Komponen | Deskripsi |
 |----------|----------|
-| Input | *Contoh: Request HTTP dari browser pengguna* |
-| Process | |
-| Output | |
-| Outcome | |
-| Constraints | |
-| Stakeholders | |
+| Input | Koordinat GPS Driver & User, peta digital, data kemacetan, jam operasional, dan data cuaca |
+| Process | Pengolahan rute tercepat dan kalkulasi beban waktu pada setiap titik hambatan jalan |
+| Output | Tampilan numerik waktu tunggu di layar aplikasi pengguna (Contoh: "5 Menit Lagi") |
+| Outcome | Peningkatan kepastian waktu bagi penumpang dan efisiensi manajemen jadwal driver |
+| Constraints | Akurasi sinyal GPS (GPS Drift) di area gedung tinggi dan update data trafik yang tidak instan |
+| Stakeholders | Penumpang, Mitra Driver, dan Tim Pengembang Sistem (Engineer) |
 
-**Komponen mana yang paling relevan dengan masalah riset?** _______________
+**Komponen mana yang paling relevan dengan masalah riset?** Process (Logika algoritma prediksinya).
 
 ---
 
@@ -140,17 +140,16 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Clarity | *Contoh: 4 — cukup jelas tapi perlu spesifikasi dataset* | |
-| Measurability | | |
-| Relevance | | |
-| Testability | | |
-| Impact | | |
+| Clarity | 5 | Sangat jelas; membedakan antara "janji" aplikasi dan realita kedatangan |
+| Measurability | 5 | Menggunakan satuan menit dan metrik statistik (MAE) yang objektif |
+| Relevance | 5 | Sangat relevan bagi industri transportasi digital di Indonesia |
+| Testability | 5 | Bisa diuji dengan membandingkan data aktual vs prediksi model baru |
+| Impact | 4 | Berdampak besar pada kepuasan pelanggan dan reputasi platform |
 
-**Skor total:** _____ / 25
+**Skor total:** 24 / 25
 
 **Problem statement versi final (1 paragraf):**
-> ___________________________________________________
-> ___________________________________________________
+> Ketidakakuratan estimasi waktu kedatangan (ETA) pada layanan ojek online sering menyebabkan ketidakpastian bagi pengguna, di mana selisih waktu aktual di lapangan sering kali jauh lebih lama dibanding prediksi aplikasi. Hal ini disebabkan oleh keterbatasan model prediksi saat ini yang belum secara dinamis mengintegrasikan hambatan lokal seperti durasi lampu merah dan kepadatan di titik putar balik. Penelitian ini bertujuan untuk mengoptimalkan akurasi ETA dengan menambahkan variabel bobot hambatan mikro secara real-time ke dalam algoritma rute guna meminimalkan nilai Mean Absolute Error (MAE) pada sistem navigasi.
 
 ---
 
@@ -159,5 +158,4 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 > Bandingkan "masalah" yang biasa ditemui saat coding (bug, error) dengan masalah riset. Apa perbedaan fundamental dalam cara mendefinisikan dan mendekati keduanya?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Perbedaan fundamentalnya adalah pada tujuan dan cakupan. Saat coding dan bertemu bug/error, masalahnya adalah kegagalan sistem untuk berjalan (teknis); pendekatannya adalah perbaikan langsung agar fitur berfungsi kembali. Sedangkan dalam riset, masalahnya adalah gap performa atau ketidakakuratan (sistem sudah jalan, tapi tidak optimal). Pendekatannya adalah pembuktian melalui eksperimen. Sesuai prinsip saya, karena tidak ada akurasi yang mutlak, riset dilakukan bukan untuk mencari "kebenaran sempurna", melainkan untuk menemukan model dengan tingkat ketidakpastian paling kecil berdasarkan data empiris.
