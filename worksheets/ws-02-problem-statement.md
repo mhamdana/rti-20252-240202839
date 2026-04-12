@@ -102,7 +102,7 @@ Problem Statement (1 paragraf):
 
 Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Problem Formation Model.
 
-**Topik awal:** ________________________________________
+**Topik awal:** Optimasi Akurasi Estimasi Waktu (ETA) pada Aplikasi Mobile.
 
 | Tahap | Hasil |
 |-------|-------|
