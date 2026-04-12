@@ -106,11 +106,11 @@ Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Pro
 
 | Tahap | Hasil |
 |-------|-------|
-| Reality | *Contoh: Aplikasi e-commerce sering ditinggalkan saat checkout* |
-| Observed Issue (Symptom) | *Contoh: Bounce rate checkout 68%* |
-| Diagnosed Problem (Root Cause) | |
-| Researchable Problem | |
-| Measurable Variable | |
+| Reality | Masyarakat sering merasa estimasi waktu di aplikasi ojek online tidak akurat saat macet. |
+| Observed Issue (Symptom) | Terjadi delay kedatangan driver yang signifikan dibandingkan angka di aplikasi. |
+| Diagnosed Problem (Root Cause) | Model gagal memprediksi perlambatan di titik-titik putar balik (U-Turn) yang padat. |
+| Researchable Problem | Analisis pengaruh penambahan variabel "U-Turn Penalty" pada algoritma rute terhadap akurasi ETA. |
+| Measurable Variable | Selisih waktu (menit) dan RMSE (Root Mean Square Error). |
 
 **Apakah terjebak solution-first thinking?** [ ] Ya / [ ] Tidak
 > Jika ya, kembali ke tahap mana? ________________________
