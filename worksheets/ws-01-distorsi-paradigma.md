@@ -86,11 +86,11 @@ Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan perfor
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
-| Reality → Data | Mengumpulkan data tweet terbaru dari aplikasi X menggunakan teknik crawling dengan kata kunci "Cyberbullying". | Sampling Bias: Hanya mengambil tweet yang mengandung kata kunci spesifik; tweet bullying yang menggunakan bahasa sarkasme tanpa kata kunci tersebut tidak tertangkap. |
-| Data → Processing | Melakukan pembersihan data (cleaning), penyeragaman huruf (case folding), penghapusan kata umum (stopword), dan stemming. | Semantic Distortion: Proses stemming pada bahasa Indonesia seringkali menghilangkan imbuhan penting yang bisa mengubah nada atau makna asli dari sebuah keluhan atau hinaan. |
-| Processing → Analysis | Menggunakan metode TF-IDF untuk pembobotan kata dan memberikan label sentimen secara otomatis menggunakan library TextBlob. | Labeling Bias: Penggunaan library otomatis (TextBlob) untuk bahasa Indonesia sering kurang akurat dibandingkan pelabelan manual karena keterbatasan kamus bahasa gaul/lokal. |
-| Analysis → Inference | Membandingkan performa akurasi antara algoritma Naive Bayes dan SVM untuk data bilingual. | Assumptive Bias: Naive Bayes mengasumsikan setiap kata berdiri sendiri (independen), padahal dalam cyberbullying, urutan kata sangat menentukan apakah itu hinaan atau bukan. |
-| Inference → Knowledge | Menyimpulkan Naive Bayes lebih unggul (87%) dibanding SVM (86%) untuk klasifikasi sentimen bilingual. | Overgeneralization: Klaim keunggulan ini mungkin hanya berlaku pada dataset kecil (502 data Indonesia) dan belum tentu stabil jika diterapkan pada jutaan data real-time. |
+| Reality → Data | Mengumpulkan data tweet terbaru dari aplikasi X menggunakan teknik crawling dengan kata kunci "Cyberbullying" | Sampling Bias: Hanya mengambil tweet yang mengandung kata kunci spesifik; tweet bullying yang menggunakan bahasa sarkasme tanpa kata kunci tersebut tidak tertangkap |
+| Data → Processing | Melakukan pembersihan data (cleaning), penyeragaman huruf (case folding), penghapusan kata umum (stopword), dan stemming | Semantic Distortion: Proses stemming pada bahasa Indonesia seringkali menghilangkan imbuhan penting yang bisa mengubah nada atau makna asli dari sebuah keluhan atau hinaan |
+| Processing → Analysis | Menggunakan metode TF-IDF untuk pembobotan kata dan memberikan label sentimen secara otomatis menggunakan library TextBlob | Labeling Bias: Penggunaan library otomatis (TextBlob) untuk bahasa Indonesia sering kurang akurat dibandingkan pelabelan manual karena keterbatasan kamus bahasa gaul/lokal |
+| Analysis → Inference | Membandingkan performa akurasi antara algoritma Naive Bayes dan SVM untuk data bilingual | Assumptive Bias: Naive Bayes mengasumsikan setiap kata berdiri sendiri (independen), padahal dalam cyberbullying, urutan kata sangat menentukan apakah itu hinaan atau bukan |
+| Inference → Knowledge | Menyimpulkan Naive Bayes lebih unggul (87%) dibanding SVM (86%) untuk klasifikasi sentimen bilingual | Overgeneralization: Klaim keunggulan ini mungkin hanya berlaku pada dataset kecil (502 data Indonesia) dan belum tentu stabil jika diterapkan pada jutaan data real-time |
 
 **Distorsi paling besar di tahap:** Data → Processing.
 
@@ -106,9 +106,9 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 
 | Perspektif | Analisis |
 |------------|---------|
-| Kejujuran ilmiah | Peneliti harus tetap melaporkan temuan asli termasuk data outlier tersebut, karena menyembunyikan data demi hasil yang signifikan merupakan bentuk manipulasi informasi. |
-| Transparansi | Peneliti wajib memaparkan kriteria objektif dalam pembersihan data di bab metodologi sehingga pembaca tahu apakah penghapusan data didasarkan pada kesalahan instrumen atau hanya keinginan subjektif. |
-| Peer review | Penelaah (reviewer) memerlukan data yang jujur untuk menguji ketangguhan (robustness) metode; jika outlier dihapus tanpa alasan valid, maka validitas temuan tersebut patut dipertanyakan. |
+| Kejujuran ilmiah | Peneliti harus tetap melaporkan temuan asli termasuk data outlier tersebut, karena menyembunyikan data demi hasil yang signifikan merupakan bentuk manipulasi informasi |
+| Transparansi | Peneliti wajib memaparkan kriteria objektif dalam pembersihan data di bab metodologi sehingga pembaca tahu apakah penghapusan data didasarkan pada kesalahan instrumen atau hanya keinginan subjektif |
+| Peer review | Penelaah (reviewer) memerlukan data yang jujur untuk menguji ketangguhan (robustness) metode; jika outlier dihapus tanpa alasan valid, maka validitas temuan tersebut patut dipertanyakan |
 
 **Keputusan akhir dan justifikasi:**
 > Keputusan: Peneliti harus melaporkan hasil analisis dalam dua versi (dengan outlier dan tanpa outlier).
@@ -123,8 +123,8 @@ Justifikasi: Mengikuti prinsip kejujuran ilmiah, melaporkan kedua kondisi terseb
 | Kriteria | Positivis | Interpretivis | Design Science |
 |----------|-----------|---------------|----------------|
 | Kesesuaian dengan topik (1–5) | 4 | 2 | 5 |
-| Jenis data yang dikumpulkan | Data kuantitatif berupa nilai akurasi (87%), precision, dan recall. | Pemahaman kontekstual terhadap ulasan teks pengguna. | Artefak berupa model sistem klasifikasi sentimen otomatis. |
-| Limitasi paradigma | Angka statistik tidak bisa menjelaskan motif psikologis pelaku bullying. | Sangat sulit untuk mengklasifikasi ribuan data tweet secara manual. | Terlalu fokus pada efektivitas alat deteksi daripada solusi sosialnya. |
+| Jenis data yang dikumpulkan | Data kuantitatif berupa nilai akurasi (87%), precision, dan recall | Pemahaman kontekstual terhadap ulasan teks pengguna | Artefak berupa model sistem klasifikasi sentimen otomatis |
+| Limitasi paradigma | Angka statistik tidak bisa menjelaskan motif psikologis pelaku bullying | Sangat sulit untuk mengklasifikasi ribuan data tweet secara manual | Terlalu fokus pada efektivitas alat deteksi daripada solusi sosialnya |
 
 **Paradigma yang dipilih:** Design Science Research
 **Alasan:** Riset ini berfokus pada pengembangan sebuah artefak teknologi (model klasifikasi) sebagai solusi praktis untuk mendeteksi cyberbullying. Proses pengembangannya dilakukan melalui tahapan yang sistematis (Gambar 1) dan dievaluasi kinerjanya menggunakan standar objektif.
