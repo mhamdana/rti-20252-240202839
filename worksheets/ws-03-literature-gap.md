@@ -102,20 +102,24 @@ Baseline Selection:
 
 Gunakan topik riset dari WS-02. Cari minimal 5 paper relevan menggunakan Google Scholar atau database lain.
 
-**Topik riset:** ________________________________________
-**Query pencarian:** ____________________________________
-**Database:** ___________________________________________
+**Topik riset:** Optimasi Akurasi ETA Ojek Online melalui Integrasi Hambatan Mikro (Lampu Merah & Putar Balik) di Indonesia.
+**Query pencarian:** ETA Prediction Indonesia, Machine Learning Transportasi Online, Traffic Delay Micro-obstacles.
+**Database:** Google Scholar
 
 | # | Study | Tahun | Method | Dataset | Result | Limitasi |
 |---|-------|-------|--------|---------|--------|----------|
-| 1 | *Contoh: Rahman et al.* | *2023* | *CNN* | *ImageNet subset* | *Acc 91%* | *Hanya 3 kelas* |
-| 2 | | | | | | |
-| 3 | | | | | | |
-| 4 | | | | | | |
-| 5 | | | | | | |
+| 1 | *Ahmad Fauzi* | *2024* | *Random Forest & XGBoost* | *Data Gojek, Grab, Blue Bird* | *ML berkontribusi signifikan dalam memprediksi permintaan & rute* | *Belum mendalami variabel hambatan mikro spesifik seperti lampu merah.* |
+| 2 | *Raja Joko Musridho* | *2025* | *Dijkstra vs Google Maps API* | *Rute nyata di Pekanbaru* | *Google Maps lebih adaptif terhadap lalu lintas dinamis dibanding Dijkstra* | *Mekanisme internal penentuan bobot Google Maps bersifat tertutup (black-box).* |
+| 3 | *ByeoungDo Kim (PAtt)* | *2026* | *Pattern Attention Network* | *294 Juta rute (South Korea)* | *Korea) 
 
-**Pola yang terlihat — Metode dominan:** ___________________
-**Limitasi yang berulang:** ______________________________
+MAPE 8.78%, unggul dalam menangkap profil kecepatan historis* | *Fokus pada pola kecepatan makro, bukan hambatan statis di titik balik.* |
+| 4 | *Sanjaya & Supangkat* | *2020* | *Predictive Analytics* | *Data keterlambatan PT. KAI* | *Berhasil memprediksi waktu keterlambatan berdasarkan penyebabnya* | *waktu keterlambatan berdasarkan penyebabnya 
+
+Karakteristik jalur rel tunggal tidak sekompleks lalu lintas jalan raya.* |
+| 5 | *Riskiyah et al.* | *2024* | *Extreme Learning Machine* | *Review kepuasan Gojek* | *Keterlambatan menjadi faktor utama ketidakpuasan pengguna* | *Fokus pada analisis sentimen, bukan optimasi rute waktu nyata.* |
+
+**Pola yang terlihat — Metode dominan:** Penggunaan algoritma ensemble (XGBoost/RF) dan mekanisme Attention untuk memproses data sekuensial perjalanan.
+**Limitasi yang berulang:** Kesulitan menangkap dinamika hambatan di titik mikro (lampu merah/U-turn) yang sering menyebabkan selisih waktu aktual jauh lebih lama dibanding prediksi aplikasi.
 
 ---
 
@@ -125,14 +129,14 @@ Berdasarkan tabel di Latihan 1, identifikasi gap.
 
 | Jenis Gap | Ditemukan? | Gap Statement |
 |-----------|-----------|---------------|
-| Performance Gap | [ ] Ya / [ ] Tidak | *Contoh: Akurasi turun di bawah 80% untuk kelas minoritas* |
-| Method Gap | [ ] Ya / [ ] Tidak | |
-| Data Gap | [ ] Ya / [ ] Tidak | |
-| Context Gap | [ ] Ya / [ ] Tidak | |
+| Performance Gap | [v] Ya / [ ] Tidak | Akurasi prediksi sering meleset karena model cenderung melakukan perataan (smoothing) data, sehingga gagal mendeteksi lonjakan durasi di lampu merah. |
+| Method Gap | [v] Ya / [ ] Tidak | Belum ada integrasi variabel "bobot hambatan mikro" secara dinamis dalam algoritma rute terbuka (open-source) untuk konteks jalanan lokal Indonesia. |
+| Data Gap | [ ] Ya / [v] Tidak | Data perjalanan (GPS logs) sudah tersedia melimpah, namun pemanfaatannya untuk fitur hambatan mikro masih terbatas. |
+| Context Gap | [v] Ya / [ ] Tidak | Model mutakhir (SOTA) sering diuji di tata kota teratur; hambatan unik Indonesia (titik balik padat) belum terakomodasi secara eksplisit dalam algoritma. |
 
-**Gap utama yang dipilih:** _____________________________
+**Gap utama yang dipilih:** Kombinasi Method dan Context Gap.
 **Mengapa gap ini penting (bukan sekadar "belum ada yang meneliti")?**
-> ___________________________________________________
+> Karena ketidakakuratan prediksi waktu akibat hambatan mikro berdampak langsung pada kepuasan pelanggan dan efisiensi pengemudi , yang selama ini belum teratasi sepenuhnya oleh model navigasi generalis yang ada.
 
 ---
 
@@ -142,11 +146,11 @@ Pilih 2 baseline dari literatur yang sudah dibaca.
 
 | # | Baseline | Mengapa Relevan | Mengapa Representatif | Apakah SOTA? | Sumber |
 |---|----------|----------------|----------------------|-------------|--------|
-| 1 | *Contoh: RF + TF-IDF* | *Task sama: klasifikasi teks* | *Dipakai 6 dari 10 paper* | *Bukan, tapi common practice* | *Lee et al., 2022* |
-| 2 | | | | | |
+| 1 | XGBoost Regressor | Digunakan luas untuk prediksi durasi perjalanan ojek online. | Mewakili model ML tabular yang umum digunakan dalam riset transportasi lokal. | Ya (Machine Learning). | Ahmad Fauzi (2024) |
+| 2 | Google Maps API | Benchmark navigasi real-time yang digunakan mayoritas platform ojek online. | Menjadi standar emas navigasi yang dirasakan langsung oleh pengguna. | Ya (Industry SOTA). | Musridho et al. (2025) |
 
-**Apakah pemilihan baseline ini bisa dianggap straw man?** [ ] Ya / [ ] Tidak
-> Justifikasi: ________________________________________
+**Apakah pemilihan baseline ini bisa dianggap straw man?** [ ] Ya / [v] Tidak
+> Justifikasi: Perbandingan dilakukan dengan algoritma ML yang rigorus (XGBoost) dan pemimpin pasar (Google Maps), bukan dengan algoritma statis yang sengaja dibuat lemah.
 
 ---
 
@@ -155,5 +159,5 @@ Pilih 2 baseline dari literatur yang sudah dibaca.
 > Apa perbedaan antara "belum ada yang meneliti ini" (klaim tanpa bukti) dengan research gap yang valid? Bagaimana cara membuktikan bahwa sebuah gap benar-benar ada?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Perbedaan antara klaim "belum ada yang meneliti" dengan research gap yang valid terletak pada bukti pencarian. Klaim tanpa bukti hanyalah asumsi, sedangkan research gap valid didasarkan pada pemetaan literatur yang menunjukkan limitasi nyata dari peneliti terdahulu.
+> Cara membuktikannya adalah melalui strategi pencarian sistematis—mendokumentasikan basis data, query, hingga teknik snowballing—untuk memastikan bahwa "kekosongan" tersebut memang belum dijawab oleh riset lain hingga saat ini.
