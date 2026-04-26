@@ -111,9 +111,7 @@ Gunakan topik riset dari WS-02. Cari minimal 5 paper relevan menggunakan Google 
 | 1 | *Ahmad Fauzi* | *2024* | *Random Forest & XGBoost* | *Data Gojek, Grab, Blue Bird* | *ML berkontribusi signifikan dalam memprediksi permintaan & rute* | *Belum mendalami variabel hambatan mikro spesifik seperti lampu merah.* |
 | 2 | *Raja Joko Musridho* | *2025* | *Dijkstra vs Google Maps API* | *Rute nyata di Pekanbaru* | *Google Maps lebih adaptif terhadap lalu lintas dinamis dibanding Dijkstra* | *Mekanisme internal penentuan bobot Google Maps bersifat tertutup (black-box).* |
 | 3 | *ByeoungDo Kim (PAtt)* | *2026* | *Pattern Attention Network* | *294 Juta rute (South Korea)* | *Korea) MAPE 8.78%, unggul dalam menangkap profil kecepatan historis* | *Fokus pada pola kecepatan makro, bukan hambatan statis di titik balik.* |
-| 4 | *Sanjaya & Supangkat* | *2020* | *Predictive Analytics* | *Data keterlambatan PT. KAI* | *Berhasil memprediksi waktu keterlambatan berdasarkan penyebabnya* | *waktu keterlambatan berdasarkan penyebabnya 
-
-Karakteristik jalur rel tunggal tidak sekompleks lalu lintas jalan raya.* |
+| 4 | *Sanjaya & Supangkat* | *2020* | *Predictive Analytics* | *Data keterlambatan PT. KAI* | *Berhasil memprediksi waktu keterlambatan berdasarkan penyebabnya* | *waktu keterlambatan berdasarkan penyebabnya Karakteristik jalur rel tunggal tidak sekompleks lalu lintas jalan raya.* |
 | 5 | *Riskiyah et al.* | *2024* | *Extreme Learning Machine* | *Review kepuasan Gojek* | *Keterlambatan menjadi faktor utama ketidakpuasan pengguna* | *Fokus pada analisis sentimen, bukan optimasi rute waktu nyata.* |
 
 **Pola yang terlihat — Metode dominan:** Penggunaan algoritma ensemble (XGBoost/RF) dan mekanisme Attention untuk memproses data sekuensial perjalanan.
