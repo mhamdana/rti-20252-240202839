@@ -94,15 +94,15 @@ Experimental Setup:
 
 Gunakan RQ dan variabel dari WS-05. Petakan ke komponen sistem.
 
-**RQ:** __________________________________________________
+**RQ:** Apakah integrasi fitur hambatan mikro meningkatkan akurasi ETA pada model XGBoost?
 
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi / Pengukuran |
 |----------|------|-----------------|---------------------------|
-| *Contoh: Jenis model* | *IV* | *Modul classifier (swap RF ↔ CNN)* | *Ganti config `model_type`* |
-| | DV | | |
-| | CV | | |
+| Dataset Fitur | IV | Data Pre-processor | Toggle antara dataset "Standard" vs "Micro-Injected". |
+| Nilai MAPE | DV | Loss Function & Metrics | Output dari fungsi mean_absolute_percentage_error(). |
+| Area Geografis | CV | Data Filter Module | Membatasi rute hanya di area urban (Jakarta/Bandung). |
 
-**Apakah semua variabel bisa di-map?** [ ] Ya / [ ] Tidak
+**Apakah semua variabel bisa di-map?** [x] Ya / [ ] Tidak
 > Jika tidak, komponen apa yang perlu ditambahkan? _________
 
 ---
@@ -113,14 +113,14 @@ Evaluasi desain sistem terhadap 4 prinsip.
 
 | Prinsip | Status | Bukti / Penjelasan |
 |---------|--------|-------------------|
-| Traceability | *Contoh: ✅ — setiap modul punya label variabel* | |
-| Modularity | | |
-| Controllability | | |
-| Measurability | | |
+| Traceability |✅| Setiap kolom input di dataframe diberi label sesuai perannya dalam riset.|
+| Modularity |✅| Modul pemetaan titik lampu merah terpisah dari modul training XGBoost. |
+| Controllability |✅| Semua parameter algoritma diletakkan di variabel global di awal baris kode. |
+| Measurability |✅| Sistem secara otomatis membandingkan waktu aktual vs prediksi untuk setiap rute. |
 
-**Prinsip mana yang paling sulit dipenuhi?** _______________
+**Prinsip mana yang paling sulit dipenuhi?** Controllability (Data Consistency).
 **Strategi untuk mengatasinya:**
-> ___________________________________________________
+> Menggunakan teknik Data Cleaning yang ketat sebelum masuk ke model untuk memastikan CV (seperti kondisi cuaca atau jenis kendaraan) seragam di semua rute yang diuji.
 
 ---
 
@@ -130,14 +130,14 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 
 | Kondisi | Komponen A | Komponen B | Komponen C | Hasil yang Diharapkan |
 |---------|-----------|-----------|-----------|----------------------|
-| Full | *Contoh: ✅ CNN* | *Contoh: ✅ Temporal features* | *Contoh: ✅ Z-score norm* | *Baseline penuh* |
-| – A | ❌ (ganti RF) | ✅ | ✅ | |
-| – B | ✅ | ❌ (tanpa temporal) | ✅ | |
-| – C | ✅ | ✅ | ❌ (tanpa normalisasi) | |
+| Full | ✅Terpasang | ✅Terpasang | ✅Terpasang | Akurasi (MAPE) terbaik/terendah. |
+| – A | ❌Dilepas | ✅ | ✅ | Melihat kontribusi lampu merah. |
+| – B | ✅ | ❌Dilepas | ✅ | Melihat kontribusi titik putar balik. |
+| – C | ✅ | ✅ | ❌Dilepas | Melihat kontribusi data kecepatan historis. |
 
-**Komponen mana yang diprediksi paling berkontribusi?** _____
+**Komponen mana yang diprediksi paling berkontribusi?** Komponen A (Lampu Merah).
 **Mengapa?**
-> ___________________________________________________
+> Karena durasi berhenti di lampu merah di kota besar Indonesia memiliki variansi waktu tunggu yang lebih lama (bisa 60-120 detik) dibandingkan manuver putar balik.
 
 ---
 
@@ -146,5 +146,5 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 > Apa risiko jika sistem dibangun seperti produk (monolitik, fitur lengkap) lalu baru dilakukan eksperimen? Mengapa arsitektur modular penting untuk riset?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Risiko jika membangun sistem secara monolitik (seperti produk) adalah terjadinya confounding variables. Jika sistem gagal atau akurasinya rendah, peneliti akan kesulitan menentukan modul mana yang bermasalah. Kita tidak bisa membuktikan apakah kegagalan itu karena datanya, algoritmanya, atau fiturnya.
+> Arsitektur modular penting bagi riset karena memungkinkan Variable Isolation. Peneliti bisa melakukan "bongkar-pasang" (ablation) pada komponen tertentu secara independen untuk melihat kontribusi spesifiknya terhadap jawaban dari Research Question.
