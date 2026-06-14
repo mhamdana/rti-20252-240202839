@@ -106,13 +106,13 @@ Statistical Plan:
 
 Susun desain eksperimen berdasarkan RQ, variabel, dan sistem dari WS-04 sampai WS-06.
 
-**RQ:** Apakah fitur Memory Saver pada Google Chrome menghasilkan retensi kapasitas memori RAM yang lebih besar dibandingkan fitur Tab Unloading pada Mozilla Firefox saat menangani 35 tab pasif?[cite: 8]
+**RQ:** Apakah fitur Memory Saver pada Google Chrome menghasilkan retensi kapasitas memori RAM yang lebih besar dibandingkan fitur Tab Unloading pada Mozilla Firefox saat menangani 35 tab pasif?
 **Tipe eksperimen:** [x] Comparison / [ ] Ablation / [ ] Parameter
 
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control | Pengujian alokasi memori pada *browser* Mozilla Firefox (Gecko Engine) dengan parameter bawaan[cite: 8]. | Gecko Tab Unloading[cite: 8] | Lingkungan OS Windows 11 desktop, 35 alamat URL identik kaya media, interval waktu tunggu pasif 15 menit, *background applications* dinonaktifkan, *clean session*[cite: 8]. |
-| Treatment | Pengujian alokasi memori pada *browser* Google Chrome (Chromium Engine) dengan parameter bawaan[cite: 8]. | Chromium Memory Saver[cite: 8] | Lingkungan OS Windows 11 desktop, 35 alamat URL identik kaya media, interval waktu tunggu pasif 15 menit, *background applications* dinonaktifkan, *clean session*[cite: 8]. |
+| Control | Pengujian alokasi memori pada *browser* Mozilla Firefox (Gecko Engine) dengan parameter bawaan. | Gecko Tab Unloading | Lingkungan OS Windows 11 desktop, 35 alamat URL identik kaya media, interval waktu tunggu pasif 15 menit, *background applications* dinonaktifkan, *clean session*. |
+| Treatment | Pengujian alokasi memori pada *browser* Google Chrome (Chromium Engine) dengan parameter bawaan. | Chromium Memory Saver | Lingkungan OS Windows 11 desktop, 35 alamat URL identik kaya media, interval waktu tunggu pasif 15 menit, *background applications* dinonaktifkan, *clean session*. |
 
 ---
 
@@ -122,11 +122,11 @@ Evaluasi apakah desain eksperimen di Latihan 1 sudah fair.
 
 | Kriteria | Status | Detail |
 |----------|--------|--------|
-| Dataset identik | ✅ | Sama-sama memuat 35 alamat URL situs kaya media yang identik secara simultan[cite: 8]. |
-| Preprocessing setara | ✅ | Kedua *browser* dibersihkan seluruh *cache* sistemnya (*clean session*) sebelum pengujian dimulai[cite: 8]. |
-| Tuning effort setara | ✅ | Kedua objek uji menggunakan konfigurasi parameter otomatis bawaan yang sudah dioptimalkan oleh masing-masing vendor browser[cite: 8]. |
-| Environment identik | ✅ | Dieksekusi pada unit komputer desktop yang sama (Windows 11) dengan kondisi aplikasi latar belakang dinonaktifkan[cite: 8]. |
-| Metrik evaluasi sama | ✅ | Menggunakan parameter ukur yang sama: total kapasitas RAM terbebas (MB) dan kecepatan eksekusi pelepasan memori (detik)[cite: 8]. |
+| Dataset identik | ✅ | Sama-sama memuat 35 alamat URL situs kaya media yang identik secara simultan. |
+| Preprocessing setara | ✅ | Kedua *browser* dibersihkan seluruh *cache* sistemnya (*clean session*) sebelum pengujian dimulai. |
+| Tuning effort setara | ✅ | Kedua objek uji menggunakan konfigurasi parameter otomatis bawaan yang sudah dioptimalkan oleh masing-masing vendor browser. |
+| Environment identik | ✅ | Dieksekusi pada unit komputer desktop yang sama (Windows 11) dengan kondisi aplikasi latar belakang dinonaktifkan. |
+| Metrik evaluasi sama | ✅ | Menggunakan parameter ukur yang sama: total kapasitas RAM terbebas (MB) dan kecepatan eksekusi pelepasan memori (detik). |
 
 **Ada yang tidak fair?** [ ] Ya / [x] Tidak
 > Jika ya, bagaimana cara memperbaikinya? ________________
@@ -139,14 +139,14 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal | Lonjakan acak konsumsi RAM akibat proses latar belakang (*background noise*) dari OS Windows[cite: 8]. | Menonaktifkan seluruh aplikasi latar belakang non-esensial dan menerapkan skenario pengujian berulang (*3x repeated run*)[cite: 8]. |
-| External | Karakteristik muatan halaman web dinamis berubah di tingkat server saat pengujian antar-browser[cite: 8]. | Menggunakan alamat rujukan web dengan muatan statis kaya media yang stabil atau membekukan skrip lokal[cite: 8]. |
-| Construct | Alat ukur performa internal masing-masing browser memiliki standarisasi pelaporan data yang berbeda[cite: 8]. | Memakai **Windows Performance Monitor (PerfMon)** API terintegrasi pada kernel OS untuk menjamin kenetralan data[cite: 8]. |
-| Conclusion | Bias penarikan kesimpulan akibat anomali pembacaan log RAM dari satu kali pengujian acak[cite: 8]. | Menerapkan metodologi *rigorous performance evaluation* dengan menarik rata-rata persentase penurunan dari data *repeated runs*[cite: 8]. |
+| Internal | Lonjakan acak konsumsi RAM akibat proses latar belakang (*background noise*) dari OS Windows. | Menonaktifkan seluruh aplikasi latar belakang non-esensial dan menerapkan skenario pengujian berulang (*3x repeated run*). |
+| External | Karakteristik muatan halaman web dinamis berubah di tingkat server saat pengujian antar-browser. | Menggunakan alamat rujukan web dengan muatan statis kaya media yang stabil atau membekukan skrip lokal. |
+| Construct | Alat ukur performa internal masing-masing browser memiliki standarisasi pelaporan data yang berbeda. | Memakai **Windows Performance Monitor (PerfMon)** API terintegrasi pada kernel OS untuk menjamin kenetralan data. |
+| Conclusion | Bias penarikan kesimpulan akibat anomali pembacaan log RAM dari satu kali pengujian acak. | Menerapkan metodologi *rigorous performance evaluation* dengan menarik rata-rata persentase penurunan dari data *repeated runs*. |
 
-**Ancaman mana yang paling sulit mitigasi?** Internal Validity (*Background Noise* OS Windows 11).
+**Ancaman mana yang paling sulit dimitigasi?** Internal Validity (*Background Noise* OS Windows 11).
 **Mengapa?**
-> Karena kernel sistem operasi Windows 11 secara inheren selalu menjalankan sub-proses dinamis latar belakang (seperti skedul sistem atau indeks file) yang tidak dapat dimatikan seutuhnya, sehingga potensi bias pengukuran skala kecil akan selalu ada pada level runtime[cite: 8].
+> Karena kernel sistem operasi Windows 11 secara inheren selalu menjalankan sub-proses dinamis latar belakang (seperti skedul sistem atau indeks file) yang tidak dapat dimatikan seutuhnya, sehingga potensi bias pengukuran skala kecil akan selalu ada pada level runtime.
 
 ---
 
@@ -155,6 +155,6 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 > Sebuah paper melaporkan "metode kami mengalahkan semua baseline." Apa 3 pertanyaan pertama yang harus diajukan untuk mengevaluasi klaim ini?
 
 **Jawaban:**
-1. **Apakah baseline yang dipilih merepresentasikan standar industri terbaik (*State-of-the-Art*)?** Perlu dipastikan penelitian tidak melakukan *straw man comparison* dengan sengaja memilih pembanding lemah atau versi browser usang yang tidak dioptimalkan[cite: 3, 8].
-2. **Apakah seluruh kondisi lingkungan uji (*environment*) dijaga benar-benar identik tanpa menguntungkan salah satu pihak?** Harus divalidasi apakah proses pembersihan sistem (*clean session*) dan isolasi variabel kontrol diterapkan secara setara pada metode baru maupun baseline[cite: 3, 8].
-3. **Apakah keunggulan performa yang dilaporkan konsisten dan signifikan secara statistik melalui pengujian berulang (*repeated runs*)?** Kita harus mempertanyakan apakah hasil tersebut murni kapabilitas metode atau sekadar kebetulan statistik dari satu kali running eksperimen[cite: 3, 8].
+1. **Apakah baseline yang dipilih merepresentasikan standar industri terbaik (*State-of-the-Art*)?** Perlu dipastikan penelitian tidak melakukan *straw man comparison* dengan sengaja memilih pembanding lemah atau versi browser usang yang tidak dioptimalkan.
+2. **Apakah seluruh kondisi lingkungan uji (*environment*) dijaga benar-benar identik tanpa menguntungkan salah satu pihak?** Harus divalidasi apakah proses pembersihan sistem (*clean session*) dan isolasi variabel kontrol diterapkan secara setara pada metode baru maupun baseline.
+3. **Apakah keunggulan performa yang dilaporkan konsisten dan signifikan secara statistik melalui pengujian berulang (*repeated runs*)?** Kita harus mempertanyakan apakah hasil tersebut murni kapabilitas metode atau sekadar kebetulan statistik dari satu kali running eksperimen.
