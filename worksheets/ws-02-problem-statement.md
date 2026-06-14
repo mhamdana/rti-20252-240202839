@@ -102,18 +102,18 @@ Problem Statement (1 paragraf):
 
 Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Problem Formation Model.
 
-**Topik awal:** Optimasi Akurasi Estimasi Waktu (ETA) pada Aplikasi Mobile.
+**Topik awal:** Analisis Performa dan Manajemen Memori Runtime pada Aplikasi Web Modern.
 
 | Tahap | Hasil |
 |-------|-------|
-| Reality | Masyarakat sering merasa estimasi waktu di aplikasi ojek online tidak akurat saat macet |
-| Observed Issue (Symptom) | Terjadi delay kedatangan driver yang signifikan dibandingkan angka di aplikasi |
-| Diagnosed Problem (Root Cause) | Model gagal memprediksi perlambatan di titik-titik putar balik (U-Turn) yang padat |
-| Researchable Problem | Analisis pengaruh penambahan variabel "U-Turn Penalty" pada algoritma rute terhadap akurasi ETA |
-| Measurable Variable | Selisih waktu (menit) dan RMSE (Root Mean Square Error) |
+| Reality | Pengguna perangkat desktop dengan kapasitas memori terbatas sering mengalami kelambatan sistem saat membuka banyak tab browser sekaligus. |
+| Observed Issue (Symptom) | Terjadi penurunan responsivitas sistem operasi secara menyeluruh (lag/hang) dan lonjakan utilisasi RAM hingga mendekati batas maksimal. |
+| Diagnosed Problem (Root Cause) | Tingginya overhead footprint dan kebocoran memori (memory leak) pada sub-proses mesin rendering runtime saat mengeksekusi framework web modern yang sarat skrip berat. |
+| Researchable Problem | Evaluasi dan analisis komparatif dampak penggunaan WebAssembly (Wasm) vs JavaScript terhadap efisiensi manajemen alokasi heap memory dan execution performance aplikasi web. |
+| Measurable Variable | Jejak memori runtime (JSHeapUsedSize/Private Bytes dalam MB) dan metrik performa (Largest Contentful Paint/LCP dalam detik). |
 
-**Apakah terjebak solution-first thinking?** [ ] Ya / [ ] Tidak
-> Jika ya, kembali ke tahap mana? Tidak, karena analisis dimulai dari gejala keterlambatan di lapangan.
+**Apakah terjebak solution-first thinking?** [ ] Ya / [x] Tidak
+> Jika ya, kembali ke tahap mana? Tidak, karena analisis berakar dari fenomena degradasi performa hardware akibat beban kerja aplikasi web secara riil di lapangan.
 
 ---
 
@@ -123,14 +123,14 @@ Gambarkan konteks sistem dari masalah riset di Latihan 1.
 
 | Komponen | Deskripsi |
 |----------|----------|
-| Input | Koordinat GPS Driver & User, peta digital, data kemacetan, jam operasional, dan data cuaca |
-| Process | Pengolahan rute tercepat dan kalkulasi beban waktu pada setiap titik hambatan jalan |
-| Output | Tampilan numerik waktu tunggu di layar aplikasi pengguna (Contoh: "5 Menit Lagi") |
-| Outcome | Peningkatan kepastian waktu bagi penumpang dan efisiensi manajemen jadwal driver |
-| Constraints | Akurasi sinyal GPS (GPS Drift) di area gedung tinggi dan update data trafik yang tidak instan |
-| Stakeholders | Penumpang, Mitra Driver, dan Tim Pengembang Sistem (Engineer) |
+| Input | Source code aplikasi web (skrip JavaScript / modul biner WebAssembly), interaksi user (pembukaan komponen halaman), dan alokasi resource awal hardware. |
+| Process | Eksekusi engine runtime penjelajah web, manajemen daur hidup heap memory, serta isolasi pemrosesan latar belakang (background process). |
+| Output | Visualisasi antarmuka halaman web interaktif dan visualisasi log tracing konsumsi resource memori. |
+| Outcome | Terwujudnya arsitektur aplikasi web modern lintas platform yang ringan, hemat daya, dan responsif tanpa membebani memori sistem. |
+| Constraints | Batasan kapasitas fisik memori RAM perangkat target (khususnya perangkat mobile/spesifikasi standar) dan limitasi kapabilitas pelaporan alat ukur memori internal browser. |
+| Stakeholders | Web Developers (Pengembang Perangkat Lunak), Penyedia Framework Web, dan End-Users (Pengguna Perangkat Spesifikasi Standar). |
 
-**Komponen mana yang paling relevan dengan masalah riset?** Process (Logika algoritma prediksinya).
+**Komponen mana yang paling relevan dengan masalah riset?** Process (Manajemen daur hidup heap memory dan eksekusi sub-proses engine runtime).
 
 ---
 
@@ -140,16 +140,16 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Clarity | 5 | Sangat jelas; membedakan antara "janji" aplikasi dan realita kedatangan |
-| Measurability | 5 | Menggunakan satuan menit dan metrik statistik (MAE) yang objektif |
-| Relevance | 5 | Sangat relevan bagi industri transportasi digital di Indonesia |
-| Testability | 5 | Bisa diuji dengan membandingkan data aktual vs prediksi model baru |
-| Impact | 4 | Berdampak besar pada kepuasan pelanggan dan reputasi platform |
+| Clarity | 5 | Sangat jelas; mendefinisikan batas tegas antara konsumsi resource komputasi runtime dan hambatan performa sistem fisik. |
+| Measurability | 5 | Menggunakan satuan ukuran data yang eksak (Megabytes) dan standar metrik audit performa web (detik) secara objektif. |
+| Relevance | 5 | Amat relevan dengan tren migrasi arsitektur aplikasi native menuju ekosistem Progressive Web Applications (PWA). |
+| Testability | 5 | Dapat diuji secara empiris melalui komparasi prototype fungsional di bawah kondisi beban kerja laboratorium terkontrol. |
+| Impact | 5 | Memberikan acuan arsitektural yang valid bagi pengembang dalam memitigasi isu kebocoran memori pada eksekusi runtime modern. |
 
-**Skor total:** 24 / 25
+**Skor total:** 25 / 25
 
 **Problem statement versi final (1 paragraf):**
-> Ketidakakuratan estimasi waktu kedatangan (ETA) pada layanan ojek online sering menyebabkan ketidakpastian bagi pengguna, di mana selisih waktu aktual di lapangan sering kali jauh lebih lama dibanding prediksi aplikasi. Hal ini disebabkan oleh keterbatasan model prediksi saat ini yang belum secara dinamis mengintegrasikan hambatan lokal seperti durasi lampu merah dan kepadatan di titik putar balik. Penelitian ini bertujuan untuk mengoptimalkan akurasi ETA dengan menambahkan variabel bobot hambatan mikro secara real-time ke dalam algoritma rute guna meminimalkan nilai Mean Absolute Error (MAE) pada sistem navigasi.
+> Tren pengembangan aplikasi web modern lintas platform yang sarat akan skrip berat sering memicu lonjakan konsumsi heap memory pada sub-proses mesin rendering penjelajah web. Bagi pengguna perangkat berspesifikasi standar atau mobile, tingginya footprint runtime ini mengakibatkan degradasi performa komputasi di tingkat kernel berupa kelambatan sistem secara menyeluruh (lag/hang) akibat operasi disk swapping. Meskipun teknologi WebAssembly (Wasm) hadir menawarkan Lightweight Isolation dan Secure Memory Sandbox, belum ada data evaluatif empiris yang komprehensif mengenai tingkat efisiensi alokasi memori nyata dan responsivitas pemulihannya dibandingkan dengan JavaScript di bawah kondisi beban kerja yang identik. Penelitian ini bertujuan untuk memetakan performa jejak memori (memory traces) kedua arsitektur runtime secara kuantitatif guna meminimalkan nilai overhead footprint sistem penjelajah web.
 
 ---
 
@@ -158,4 +158,4 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 > Bandingkan "masalah" yang biasa ditemui saat coding (bug, error) dengan masalah riset. Apa perbedaan fundamental dalam cara mendefinisikan dan mendekati keduanya?
 
 **Jawaban:**
-> Perbedaan fundamentalnya adalah pada tujuan dan cakupan. Saat coding dan bertemu bug/error, masalahnya adalah kegagalan sistem untuk berjalan (teknis); pendekatannya adalah perbaikan langsung agar fitur berfungsi kembali. Sedangkan dalam riset, masalahnya adalah gap performa atau ketidakakuratan (sistem sudah jalan, tapi tidak optimal). Pendekatannya adalah pembuktian melalui eksperimen. Sesuai prinsip saya, karena tidak ada akurasi yang mutlak, riset dilakukan bukan untuk mencari "kebenaran sempurna", melainkan untuk menemukan model dengan tingkat ketidakpastian paling kecil berdasarkan data empiris.
+> Perbedaan fundamentalnya terletak pada status operasional sistem, tujuan akhir, dan metodologi penyelesaiannya. Masalah saat coding berupa bug atau error teknis ditandai dengan kegagalan crash atau berhentinya fungsionalitas sistem (sistem tidak berjalan), sehingga pendekatannya adalah perbaikan kode secara instan atau local debugging agar fitur kembali berfungsi normal. Sebaliknya, masalah riset (research problem) berfokus pada gap performa, ketidakstabilan alokasi resource, atau ketidakoptimalan sistem (sistem sudah berjalan dengan baik, tetapi perilakunya belum dipahami sepenuhnya). Pendekatannya tidak melulu memperbaiki error saat itu juga, melainkan mengisolasi variabel, mengunci konfigurasi kontrol, dan mengumpulkan data kuantitatif melalui eksperimen berulang (repeated runs) demi menghasilkan kontribusi pengetahuan empiris yang terstandarisasi dan dapat direplikasi oleh peneliti lain.
