@@ -78,65 +78,65 @@ Tanggal          : ____________________
 
 ## Latihan 1 — Identifikasi Distorsi
 
-Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan performa." Telusuri setiap tahap Research Trust Model.
+Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan performa." Telusuri setiap tahap Research Trust Model[cite: 1].
 
 **Paper yang dipilih:**
-> Judul: _Penerapan Algoritma Klasifikasi Naive Bayes dan Support Vector Machine untuk Analisis Sentimen Cyberbullying Bilingual di Aplikasi X.
-> Penulis (Tahun): Novita Sari (2025).
-> Link: https://repository.uin-suska.ac.id/85934/1/LAPORAN%20REPOSITORY%20NOVITA%20SARI.pdf
+> **Judul:** Evaluation of Rust and WebAssembly when building a Progressive Web Application: An analysis of performance and memory usage[cite: 13].
+> **Penulis (Tahun):** Natan Teferi Asegehegn (2022)[cite: 13].
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
-| Reality → Data | Mengumpulkan data tweet terbaru dari aplikasi X menggunakan teknik crawling dengan kata kunci "Cyberbullying" | Sampling Bias: Hanya mengambil tweet yang mengandung kata kunci spesifik; tweet bullying yang menggunakan bahasa sarkasme tanpa kata kunci tersebut tidak tertangkap |
-| Data → Processing | Melakukan pembersihan data (cleaning), penyeragaman huruf (case folding), penghapusan kata umum (stopword), dan stemming | Semantic Distortion: Proses stemming pada bahasa Indonesia seringkali menghilangkan imbuhan penting yang bisa mengubah nada atau makna asli dari sebuah keluhan atau hinaan |
-| Processing → Analysis | Menggunakan metode TF-IDF untuk pembobotan kata dan memberikan label sentimen secara otomatis menggunakan library TextBlob | Labeling Bias: Penggunaan library otomatis (TextBlob) untuk bahasa Indonesia sering kurang akurat dibandingkan pelabelan manual karena keterbatasan kamus bahasa gaul/lokal |
-| Analysis → Inference | Membandingkan performa akurasi antara algoritma Naive Bayes dan SVM untuk data bilingual | Assumptive Bias: Naive Bayes mengasumsikan setiap kata berdiri sendiri (independen), padahal dalam cyberbullying, urutan kata sangat menentukan apakah itu hinaan atau bukan |
-| Inference → Knowledge | Menyimpulkan Naive Bayes lebih unggul (87%) dibanding SVM (86%) untuk klasifikasi sentimen bilingual | Overgeneralization: Klaim keunggulan ini mungkin hanya berlaku pada dataset kecil (502 data Indonesia) dan belum tentu stabil jika diterapkan pada jutaan data real-time |
+| **Reality → Data** | Mengumpulkan metrik performa (*Lighthouse auditing*) dan jejak memori (*JSHeapUsedSize*) dari PWA berbasis Yew (Rust/Wasm) dan ReactJS[cite: 13]. | **Sampling Bias:** Pengujian performa hanya menggunakan skenario satu komponen kecil dari *Internet Booking Engine* (IBE)[cite: 13], sehingga belum tentu mencerminkan variasi beban kerja dari aplikasi web kompleks berskala penuh[cite: 13]. |
+| **Data → Processing** | Menjalankan pengujian dalam lingkungan tertutup dengan menutup aplikasi latar belakang serta menggunakan sesi penjelajah baru (*fresh browser sessions*)[cite: 13]. | **Environment Distortion:** Kondisi lingkungan pengujian yang sangat terisolasi ini dapat mendistorsi realitas penggunaan dunia nyata[cite: 13], di mana perangkat pengguna biasanya menjalankan banyak aplikasi latar belakang secara simultan. |
+| **Processing → Analysis** | Menjalankan audit Lighthouse sebanyak 5 kali dan mengambil nilai median, serta mengukur memori berdasarkan variasi jumlah *DOM nodes* (300 hingga 1500)[cite: 13]. | **Measurement Bias:** Alat Puppeteer (`page.metrics()`) pada awalnya tidak mampu menangkap isolasi konsumsi memori linier dari *instance* WebAssembly secara akurat[cite: 13], sehingga membutuhkan *heap snapshot* tambahan untuk meminimalkan bias[cite: 13]. |
+| **Analysis → Inference** | Membandingkan skor Lighthouse antara versi ReactJS dan Yew pada platform desktop komputer serta platform *mobile* (emulasi Moto G4)[cite: 13]. | **Assumptive Bias:** Mengasumsikan penurunan skor *Largest Contentful Paint* (LCP) pada Yew murni karena kelemahan *framework*[cite: 13], padahal penurunan drastis tersebut diperparah oleh adanya layer latensi tambahan dari *JavaScript Web API calls* untuk *fetch data*[cite: 13]. |
+| **Inference → Knowledge** | Menyimpulkan bahwa PWA berbasis Rust/Wasm menghasilkan performa setara ReactJS pada desktop, namun berkinerja lebih buruk pada platform *mobile*[cite: 13]. | **Overgeneralization:** Kesimpulan mengenai performa buruk di *mobile* dan efisiensi memori Rust ditarik dari arsitektur *framework* Yew[cite: 13], sehingga belum tentu berlaku sama jika menggunakan *framework* Wasm lain seperti Seed atau Blazor[cite: 13]. |
 
-**Distorsi paling besar di tahap:** Data → Processing.
+**Distorsi paling besar di tahap:** Processing → Analysis[cite: 1, 13].
 
 **Dua distorsi spesifik yang teridentifikasi:**
-1. Context Loss (Bilingual): Proses penerjemahan atau pengolahan data bilingual berisiko menghilangkan konteks budaya lokal Indonesia yang sulit diterjemahkan secara harfiah ke model mesin.
-2. Algorithm Simplification: Penggunaan Naive Bayes yang "naif" mendistorsi kompleksitas bahasa manusia yang seharusnya saling berkaitan antar kata dalam satu kalimat bullying.
+1. **Wasm Memory Reporting Limitation:** Ketidakmampuan metrik dasar Puppeteer dalam melacak alokasi memori linier terisolasi milik *Wasm instance* berpotensi memicu pelaporan data *runtime memory* yang tidak valid sebelum dievaluasi ulang via *heap snapshot*[cite: 13].
+2. **Web API Interleaving Latency:** Proses interaksi bi-direksional antara Wasm dan JavaScript glue code untuk memicu *network request* serta memanipulasi DOM menciptakan bias latensi tambahan pada pengukuran metrik LFP[cite: 13].
 
 ---
 
 ## Latihan 2 — Analisis Kasus Etika
 
-Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, hasil eksperimennya menjadi signifikan. Dengan outlier, hasilnya tidak signifikan.
+Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier (misalnya, nilai pengujian Lighthouse yang melonjak tinggi akibat interferensi proses internal OS) dihapus, hasil eksperimennya menjadi signifikan. Dengan outlier, hasilnya tidak signifikan[cite: 1].
 
 | Perspektif | Analisis |
 |------------|---------|
-| Kejujuran ilmiah | Peneliti harus tetap melaporkan temuan asli termasuk data outlier tersebut, karena menyembunyikan data demi hasil yang signifikan merupakan bentuk manipulasi informasi |
-| Transparansi | Peneliti wajib memaparkan kriteria objektif dalam pembersihan data di bab metodologi sehingga pembaca tahu apakah penghapusan data didasarkan pada kesalahan instrumen atau hanya keinginan subjektif |
-| Peer review | Penelaah (reviewer) memerlukan data yang jujur untuk menguji ketangguhan (robustness) metode; jika outlier dihapus tanpa alasan valid, maka validitas temuan tersebut patut dipertanyakan |
+| **Kejujuran ilmiah** | Peneliti wajib melaporkan ke-5 hasil pengujian Lighthouse secara utuh termasuk data anomali tersebut[cite: 13]. Menyembunyikan data *outlier* hanya agar aplikasi Rust/Wasm terlihat selalu unggul dan stabil merupakan bentuk manipulasi informasi[cite: 1]. |
+| **Transparansi** | Peneliti harus memaparkan secara terbuka fluktuasi nilai skor audit pada platform emulasi *mobile*[cite: 13]. Pembaca perlu mengetahui apakah variansi skor terjadi karena efisiensi kode atau ketidakstabilan *environment* pengujian komputasi[cite: 13]. |
+| **Peer review** | Penelaah (*reviewer*) memerlukan visibilitas terhadap seluruh rentang data (nilai minimum, maksimum, dan standar deviasi) untuk memverifikasi ketangguhan klaim performa komparatif kedua PWA tersebut[cite: 13]. |
 
 **Keputusan akhir dan justifikasi:**
-> Keputusan: Peneliti harus melaporkan hasil analisis dalam dua versi (dengan outlier dan tanpa outlier).
-Justifikasi: Mengikuti prinsip kejujuran ilmiah, melaporkan kedua kondisi tersebut mencegah terjadinya distorsi pada tahap Analysis dan Inference. Hal ini memberikan gambaran yang jujur kepada pembaca mengenai batasan performa algoritma (Naive Bayes/SVM) ketika menghadapi anomali data, sesuai dengan temuan Novita Sari yang secara transparan melaporkan perbedaan akurasi yang kontras antara data Bahasa Indonesia dan Inggris.
+> **Keputusan:** Peneliti wajib mempertahankan seluruh data point (termasuk 3 data *outlier*) dan menggunakan pendekatan statistik agregasi seperti median atau rata-rata untuk mereduksi variansi data secara jujur[cite: 13].
+> **Justifikasi:** Sesuai dengan prinsip *Research Mindset*, variansi dan hasil negatif (*negative results*) adalah bagian dari kontribusi pengetahuan komputasi[cite: 1]. Melaporkan penyebaran data secara transparan membantu mengidentifikasi batasan riil dari eksekusi WebAssembly pada perangkat dengan keterbatasan *resource* memori dan daya[cite: 13].
 
 ---
 
 ## Latihan 3 — Posisi Paradigma
 
-**Topik riset:** Penerapan Algoritma Klasifikasi Naive Bayes dan Support Vector Machine untuk Analisis Sentimen Cyberbullying Bilingual di Aplikasi X.
+**Topik riset:** Evaluation of Rust and WebAssembly when building a Progressive Web Application: An analysis of performance and memory usage[cite: 13].
 
 | Kriteria | Positivis | Interpretivis | Design Science |
 |----------|-----------|---------------|----------------|
-| Kesesuaian dengan topik (1–5) | 4 | 2 | 5 |
-| Jenis data yang dikumpulkan | Data kuantitatif berupa nilai akurasi (87%), precision, dan recall | Pemahaman kontekstual terhadap ulasan teks pengguna | Artefak berupa model sistem klasifikasi sentimen otomatis |
-| Limitasi paradigma | Angka statistik tidak bisa menjelaskan motif psikologis pelaku bullying | Sangat sulit untuk mengklasifikasi ribuan data tweet secara manual | Terlalu fokus pada efektivitas alat deteksi daripada solusi sosialnya |
+| **Ksesuaian dengan topik (1–5)** | **5**[cite: 13] | **1**[cite: 13] | **5**[cite: 13] |
+| **Jenis data yang dikumpulkan** | Data kuantitatif terukur seperti skor metrik Lighthouse (FCP, LCP, TTI) dan ukuran *bundle* (MB)[cite: 13]. | Pemahaman kualitatif mengenai opini atau kenyamanan subjektif pengembang saat menulis kode Rust[cite: 13]. | Artefak fungsional berupa dua versi prototype PWA (*Internet Booking Engine*) sebagai instrumen uji[cite: 13]. |
+| **Limitasi paradigma** | Angka performa murni tidak bisa mengurai kompleksitas biaya *development cost* pengumpulan keahlian bahasa Rust[cite: 13]. | Tidak bisa memberikan pembuktian empiris berbasis angka yang valid mengenai efisiensi memori *runtime*[cite: 13]. | Terlalu fokus pada evaluasi teknis performa artefak sehingga mengabaikan aspek interaksi manusia jangka panjang[cite: 13]. |
 
-**Paradigma yang dipilih:** Design Science Research
-**Alasan:** Riset ini berfokus pada pengembangan sebuah artefak teknologi (model klasifikasi) sebagai solusi praktis untuk mendeteksi cyberbullying. Proses pengembangannya dilakukan melalui tahapan yang sistematis (Gambar 1) dan dievaluasi kinerjanya menggunakan standar objektif.
+**Paradigma yang dipilih:** Design Science di bawah asumsi filosofis Positivism[cite: 13].
+**Alasan:** Riset ini berfokus pada penciptaan dan evaluasi sebuah artefak teknologi (prototype PWA IBE) untuk memecahkan masalah kompleksitas multi-platform dalam rekayasa perangkat lunak[cite: 13]. Evaluasi kualitas dan efisiensi artefak tersebut kemudian diuji secara objektif menggunakan eksperimen kuantitatif di laboratorium terkontrol untuk menghasilkan pengetahuan empiris yang bebas dari bias pengamat[cite: 13].
 
 ---
 
 ## Refleksi
 
-> Sebelum membaca materi ini, apakah pernah mempertanyakan klaim "95% akurat"? Setelah memahami rantai distorsi, pertanyaan apa yang sekarang akan diajukan saat membaca paper?
+> Sebelum membaca materi ini, apakah pernah mempertanyakan klaim "95% akurat"? Setelah memahami rantai distorsi, pertanyaan apa yang sekarang akan diajukan saat membaca paper?[cite: 1]
 
 **Jawaban:**
-> Sebelumnya, saya cenderung skeptis terhadap klaim akurasi tinggi karena hasil tersebut seringkali tidak berlaku umum di setiap situasi. Melalui pemahaman tentang rantai distorsi, saya menyadari bahwa meskipun komputer memiliki presisi tinggi, hasil akhirnya sangat bergantung pada bagaimana data tersebut dipilih dan dimodifikasi pada tahap Processing.
-> Setelah memahami rantai distorsi, pertanyaan yang akan saya ajukan saat membaca paper adalah:
-> "Bagaimana karakteristik asli data mentah yang digunakan dan di titik mana algoritma ini mengalami kegagalan atau penurunan akurasi?".
+> Sebelum menelaah materi ini, saya cenderung menerima begitu saja klaim paper yang menyatakan WebAssembly pasti lebih cepat daripada JavaScript hanya karena landasan teorinya adalah bahasa terkompilasi[cite: 13]. 
+> 
+> Setelah memahami rantai transformasi dalam *Research Trust Model*, saya menyadari bahwa efisiensi tinggi dari sebuah teknologi sangat terikat pada variansi lingkungan eksekusinya[cite: 1, 13]. Kini, pertanyaan kritis yang akan saya ajukan saat membaca paper adalah:
+> *"Bagaimana karakteristik lingkungan pengujian diisolasi dari gangguan eksternal, dan apakah keunggulan metrik performa tersebut tetap valid ketika diuji pada platform dengan keterbatasan hardware seperti perangkat mobile?"*[cite: 13]
