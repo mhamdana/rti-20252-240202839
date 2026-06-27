@@ -26,7 +26,15 @@ Etika mencegah distorsi yang disengaja (fabrikasi, cherry-picking). Validitas me
 
 ### Paradigma Riset
 
-Mata kuliah ini menggunakan pendekatan **Positivist** (fenomena TI bisa diukur objektif melalui eksperimen terkontrol) diperkuat **Design Science Research** (artefak dibuat sebagai instrumen pengujian hipotesis, bukan tujuan akhir).
+Mata kuliah ini menggunakan pendekatan **Positivist** (fenomena TI bisa diukur objektif melalui eksperimen terkontrol) diperkuat **Design Science Research** (DSR). Penting untuk membedakan keduanya:
+
+| Paradigma | Cara Kerja | Contoh di TI |
+|-----------|-----------|---------------|
+| **Positivis** | Uji hipotesis dengan eksperimen terkontrol | Apakah CNN lebih akurat dari RF pada dataset X? |
+| **Design Science Research** | Bangun artefak (sistem/model/framework) untuk menguji proposisi | Dapatkah arsitektur hybrid CNN+LSTM membuktikan peningkatan recall ≥5%? |
+| **Interpretivis** | Pahami makna melalui konteks & kualitatif | Bagaimana peneliti manafsirkan anomali data sensor IoT? |
+
+Dalam DSR, artefak **bukan tujuan akhir** — ia adalah instrumen untuk menghasilkan pengetahuan. Pertanyaan riset tetap harus difalsifikasi.
 
 ### Mode Berpikir Peneliti
 
@@ -80,9 +88,19 @@ Tanggal          : ____________________
 
 Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan performa." Telusuri setiap tahap Research Trust Model.
 
+> **Panduan pencarian paper:** Gunakan [IEEE Xplore](https://ieeexplore.ieee.org), [ACM Digital Library](https://dl.acm.org), atau Google Scholar. Pilih paper **tahun 2020 ke atas**, di topik yang Anda minati: deteksi anomali, klasifikasi citra, NLP, keamanan siber, IoT, dsb.
+>
+> **Contoh domain TI:** "Deteksi anomali lalu-lintas jaringan menggunakan CNN — akurasi meningkat 94% vs baseline SVM 87%." Distorsi potensial: apakah dataset normal/anomali seimbang? Apakah hanya diuji pada satu vendor traffic?
+
 **Paper yang dipilih:**
+<<<<<<< HEAD
 > **Judul:** Evaluation of Rust and WebAssembly when building a Progressive Web Application: An analysis of performance and memory usage.
 > **Penulis (Tahun):** Natan Teferi Asegehegn (2022).
+=======
+> Judul: _______________________________________________
+> Penulis (Tahun): ______________________________________
+> Sumber/Link DOI: _____________________________________
+>>>>>>> upstream/main
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
@@ -120,11 +138,19 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier (misalnya, 
 
 **Topik riset:** Evaluation of Rust and WebAssembly when building a Progressive Web Application: An analysis of performance and memory usage.
 
+> **Skala 1–5:** 1 = tidak sesuai sama sekali dengan topik ini, 5 = sangat sesuai dan dominan digunakan pada riset bertopik serupa.
+
 | Kriteria | Positivis | Interpretivis | Design Science |
 |----------|-----------|---------------|----------------|
+<<<<<<< HEAD
 | **Ksesuaian dengan topik (1–5)** | **5** | **1** | **5** |
 | **Jenis data yang dikumpulkan** | Data kuantitatif terukur seperti skor metrik Lighthouse (FCP, LCP, TTI) dan ukuran *bundle* (MB). | Pemahaman kualitatif mengenai opini atau kenyamanan subjektif pengembang saat menulis kode Rust. | Artefak fungsional berupa dua versi prototype PWA (*Internet Booking Engine*) sebagai instrumen uji. |
 | **Limitasi paradigma** | Angka performa murni tidak bisa mengurai kompleksitas biaya *development cost* pengumpulan keahlian bahasa Rust. | Tidak bisa memberikan pembuktian empiris berbasis angka yang valid mengenai efisiensi memori *runtime*. | Terlalu fokus pada evaluasi teknis performa artefak sehingga mengabaikan aspek interaksi manusia jangka panjang. |
+=======
+| Kesesuaian dengan topik (1–5) | *Contoh: 4 — topik kuantitatif, cocok uji hipotesis* | *Contoh: 2 — topik tidak studi makna/konteks* | *Contoh: 5 — membangun artefak untuk uji klaim* |
+| Jenis data yang dikumpulkan | *Metrik numerik, log eksperimen* | *Wawancara, observasi kualitatif* | *Hasil uji artefak, komparasi kinerja* |
+| Limitasi paradigma | | | |
+>>>>>>> upstream/main
 
 **Paradigma yang dipilih:** Design Science di bawah asumsi filosofis Positivism.
 **Alasan:** Riset ini berfokus pada penciptaan dan evaluasi sebuah artefak teknologi (prototype PWA IBE) untuk memecahkan masalah kompleksitas multi-platform dalam rekayasa perangkat lunak. Evaluasi kualitas dan efisiensi artefak tersebut kemudian diuji secara objektif menggunakan eksperimen kuantitatif di laboratorium terkontrol untuk menghasilkan pengetahuan empiris yang bebas dari bias pengamat.
