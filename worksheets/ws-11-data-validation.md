@@ -100,15 +100,13 @@ Verifikasi apakah semua data yang direncanakan sudah terkumpul.
 
 | Skenario | Run Direncanakan | Run Tercatat | Missing | Alasan |
 |----------|-----------------|-------------|---------|--------|
-| *Contoh: BERT, DS-1* | *10* | *10* | *0* | *—* |
-| *LSTM, DS-3* | *10* | *8* | *2* | *OOM pada run 7 & 9* |
-| | | | | |
-| | | | | |
+| *Google Chrome (Intervensi)* | *40* | *40* | *0* | *-* |
+| *Mozilla Firefox (Baseline)* | *40* | *40* | *0* | *-* |
 
-**Total expected:** ____ | **Total actual:** ____ | **Missing:** ____
+**Total expected:** 80 | **Total actual:** 80 | **Missing:** 0
 
 **Keputusan untuk data missing:**
-> ___________________________________________________
+> Keseluruhan siklus perekaman berhasil diselesaikan oleh skrip otomatisasi tanpa ada iterasi yang terlewat. Data siap untuk dilanjutkan ke tahap pengecekan anomali (range validation).
 
 ---
 
@@ -116,27 +114,27 @@ Verifikasi apakah semua data yang direncanakan sudah terkumpul.
 
 Periksa data Anda untuk anomali. Gunakan metode IQR atau z-score.
 
-**Dataset sampel (atau data Anda sendiri):**
+**Dataset sampel (Kapasitas RAM Terpakai Chrome Pasca 180s dalam MB):**
 
-| Run | Accuracy (%) |
+| Run | Kapasitas RAM (MB) |
 |-----|-------------|
-| 1 | *91.2* |
-| 2 | *90.8* |
-| 3 | *91.5* |
-| 4 | *78.3* |
-| 5 | *91.0* |
+| 1 | 5745.04 |
+| 2 | 5786.70 |
+| 3 | 4764.92 |
+| 4 | 5514.00 |
+| 5 | 2100.50 |
 
 **Deteksi outlier:**
-- Q1 = ____ | Q3 = ____ | IQR = ____
-- Batas bawah (Q1 - 1.5×IQR) = ____
-- Batas atas (Q3 + 1.5×IQR) = ____
-- Outlier terdeteksi: ____
+- Q1 = 4764.92 | Q3 = 5745.04 | IQR = 980.12
+- Batas bawah (Q1 - 1.5×IQR) = 3294.74
+- Batas atas (Q3 + 1.5×IQR) = 7215.22
+- Outlier terdeteksi: Run 5 (2100.50 MB)
 
 **Investigasi (untuk setiap outlier):**
 
 | Outlier | Nilai | Kemungkinan Penyebab | Keputusan |
 |---------|-------|---------------------|-----------|
-| *Run 4* | *78.3* | *Contoh: thermal throttling setelah 3 run berturut* | *Re-run dengan cooling interval* |
+| *Run 5* | *2100.50* | *Windows 11 melakukan disk swapping ekstrem (memindah beban ke virtual memory di storage lokal) akibat manajemen termal yang mulai jenuh.* | *Tandai sebagai contextual anomaly, biarkan data tetap ada sebagai bukti fenomena swapping OS di laporan analisis.* |
 
 ---
 
@@ -144,12 +142,12 @@ Periksa data Anda untuk anomali. Gunakan metode IQR atau z-score.
 
 Buat laporan validasi ringkas untuk dataset eksperimen Anda.
 
-**1. Completeness:** ____% data terkumpul
-**2. Format:** [ ] Konsisten / [ ] Ada inkonsistensi: ____
-**3. Range check (anomali):** ____
-**4. Logic check:** [ ] Parameter sesuai plan / [ ] Ada ketidaksesuaian: ____
+**1. Completeness:** 100% data terkumpul (80 runs total).
+**2. Format:** [x] Konsisten / [ ] Ada inkonsistensi: -
+**3. Range check (anomali):** Ditemukan indikasi nilai memori anjlok tajam (outlier bawah) pada beberapa iterasi akibat intervensi *disk swapping*.
+**4. Logic check:** [x] Parameter sesuai plan / [ ] Ada ketidaksesuaian: -
 
-**Kesimpulan:** [ ] Data siap analisis / [ ] Perlu tindakan: ____
+**Kesimpulan:** [x] Data siap analisis / [ ] Perlu tindakan: -
 
 ---
 
@@ -157,5 +155,7 @@ Buat laporan validasi ringkas untuk dataset eksperimen Anda.
 
 > Apa perbedaan antara "data yang benar" dan "data yang dipercaya"? Mengapa proses validasi formal diperlukan meskipun data dikumpulkan secara otomatis?
 
-> ___________________________________________________
-> ___________________________________________________
+**Jawaban:**
+> "Data yang benar" adalah log angka mentah yang berhasil dicatat oleh Windows PerfMon tanpa *error* di program Python, berapapun nilainya. "Data yang dipercaya" adalah log data yang sudah dipastikan bebas dari gangguan latar belakang (seperti *update* OS), konsisten dengan desain eksperimen 40 URL, dan secara logika mencerminkan perilaku penghematan RAM, bukan sekadar manipulasi *virtual memory*.
+> 
+> Validasi formal mutlak diperlukan karena skrip pengeksekusi tidak memahami konteks. Mesin akan terus merekam nilai memori, meskipun saat jeda 180 detik tersebut sistem sedang mengeksekusi antrean beban latar belakang (*background noise*) lain yang tidak relevan dengan objek pengamatan arsitektur penjelajah web, sehingga validasi manual diperlukan untuk memisahkan hasil sesungguhnya dari anomali acak.

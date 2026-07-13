@@ -105,13 +105,13 @@ Statistical Plan:
 
 Susun desain eksperimen berdasarkan RQ, variabel, dan sistem dari WS-04 sampai WS-06.
 
-**RQ:** Apakah fitur Memory Saver pada Google Chrome menghasilkan retensi kapasitas memori RAM yang lebih besar dibandingkan fitur Tab Unloading pada Mozilla Firefox saat menangani 35 tab pasif?
+**RQ:** Apakah fitur Memory Saver pada Google Chrome menghasilkan retensi kapasitas memori RAM yang lebih besar dibandingkan fitur Tab Unloading pada Mozilla Firefox saat menangani 40 tab pasif?
 **Tipe eksperimen:** [x] Comparison / [ ] Ablation / [ ] Parameter
 
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control | Pengujian alokasi memori pada *browser* Mozilla Firefox menggunakan arsitektur independen berbasis mesin pembekuan bawaan Gecko. | Gecko Tab Unloading | Lingkungan OS Windows 11 desktop, 35 alamat URL identik kaya media, interval waktu tunggu pasif 15 menit, seluruh aplikasi latar belakang dinonaktifkan, kondisi sesi bersih (*clean session*). |
-| Treatment | Pengujian alokasi memori pada *browser* Google Chrome menggunakan arsitektur isolasi terpisah berbasis mesin Chromium. | Chromium Memory Saver | Lingkungan OS Windows 11 desktop, 35 alamat URL identik kaya media, interval waktu tunggu pasif 15 menit, seluruh aplikasi latar belakang dinonaktifkan, kondisi sesi bersih (*clean session*). |
+| Control | Pengujian alokasi memori pada *browser* Mozilla Firefox menggunakan arsitektur independen berbasis mesin pembekuan bawaan Gecko. | Gecko Tab Unloading | Lingkungan OS Windows 11 desktop, 40 alamat URL identik kaya media, interval waktu tunggu pasif 180 detik, seluruh aplikasi latar belakang dinonaktifkan, kondisi sesi bersih (*clean session*). |
+| Treatment | Pengujian alokasi memori pada *browser* Google Chrome menggunakan arsitektur isolasi terpisah berbasis mesin Chromium. | Chromium Memory Saver | Lingkungan OS Windows 11 desktop, 40 alamat URL identik kaya media, interval waktu tunggu pasif 180 detik, seluruh aplikasi latar belakang dinonaktifkan, kondisi sesi bersih (*clean session*). |
 
 ---
 
@@ -121,11 +121,11 @@ Evaluasi apakah desain eksperimen di Latihan 1 sudah fair.
 
 | Kriteria | Status | Detail |
 |----------|--------|--------|
-| Dataset identik | ✅ | Kedua kondisi menggunakan 35 alamat URL situs web bermuatan kaya media yang sama persis dan diakses secara bersamaan. |
+| Dataset identik | ✅ | Kedua kondisi menggunakan 40 alamat URL situs web bermuatan kaya media yang sama persis dan diakses secara bersamaan. |
 | Preprocessing setara | ✅ | Seluruh *cache* sistem dan riwayat penjelajah pada kedua aplikasi dibersihkan total (*clean session*) sebelum eksekusi pengujian dijalankan. |
 | Tuning effort setara | ✅ | Kedua penjelajah web dijalankan murni menggunakan konfigurasi otomatis bawaan pabrikan (*mature default configurations*) tanpa modifikasi kode internal atau ekstensi tambahan. |
 | Environment identik | ✅ | Eksperimen dijalankan pada unit komputer desktop yang sama dengan spesifikasi perangkat keras konstan dan seluruh *background apps* komersial dinonaktifkan. |
-| Metrik evaluasi sama | ✅ | Kedua arsitektur dievaluasi menggunakan dua metrik kuantitatif yang identik: volume memori RAM terbebas (MB) dan durasi pelepasan (detik). |
+| Metrik evaluasi sama | ✅ | Kedua arsitektur dievaluasi menggunakan metrik kuantitatif yang identik: volume memori RAM terbebas (MB). |
 
 **Ada yang tidak fair?** [ ] Ya / [x] Tidak
 > Jika ya, bagaimana cara memperbaikinya? ________________
@@ -138,7 +138,7 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal | Lonjakan utilisasi memori RAM acak akibat sub-proses latar belakang dinamis (*background noise*) milik OS host. | Menonaktifkan aplikasi non-esensial dan menerapkan metodologi pengujian kuantitatif berulang (*3x repeated run*) untuk mereduksi bias data. |
+| Internal | Lonjakan utilisasi memori RAM acak akibat sub-proses latar belakang dinamis (*background noise*) milik OS host. | Menonaktifkan aplikasi non-esensial dan menerapkan metodologi pengujian kuantitatif berulang (*40x repeated runs*) untuk mereduksi bias data. |
 | External | Karakteristik pemuatan elemen *web page* yang dinamis berubah di sisi server saat pergantian jadwal pengujian antar-browser. | Menggunakan alamat URL rujukan dengan muatan data statis kaya media yang stabil atau membekukan skrip halaman web secara lokal. |
 | Construct | Perkakas ukur pemantau internal (*internal profiler*) masing-masing aplikasi memiliki standar kalkulasi jejak RAM yang berbeda. | Mengandalkan instrumen netral **Windows Performance Monitor (PerfMon)** terintegrasi kernel OS untuk menangkap counter Private Bytes secara objektif. |
 | Conclusion | Bias penarikan kesimpulan akibat anomali atau fluktuasi statistik dari satu kali eksekusi pengujian acak. | Menerapkan evaluasi kinerja ketat (*rigorous performance evaluation*) dengan menghitung rata-rata nilai penurunan dari data *repeated runs*. |

@@ -116,13 +116,13 @@ Tentukan uji statistik yang tepat untuk eksperimen Anda.
 
 | Pertanyaan | Jawaban |
 |-----------|---------|
-| Berapa grup yang dibandingkan? | *Contoh: 3 (BERT, LSTM, SVM)* |
-| Apakah data berpasangan (paired)? | |
-| Apakah distribusi normal? (uji normalitas) | |
-| **Uji yang dipilih:** | |
-| **Justifikasi:** | |
+| Berapa grup yang dibandingkan? | 2 grup (Google Chrome dan Mozilla Firefox) |
+| Apakah data berpasangan (paired)? | Tidak (Independent), pengujian terpisah pada dua browser berbeda. |
+| Apakah distribusi normal? (uji normalitas) | Ya, diasumsikan berdistribusi normal karena jumlah sampel besar (n=40 per grup) memenuhi Teorema Limit Pusat. |
+| **Uji yang dipilih:** | **Independent Sample t-test** |
+| **Justifikasi:** | Eksperimen membandingkan nilai rata-rata dari dua kelompok yang saling bebas (independen) menggunakan skala ukur rasio (Megabytes). |
 
-**Effect size yang akan dilaporkan:** [ ] Cohen's d / [ ] Eta-squared / [ ] Lainnya: ____
+**Effect size yang akan dilaporkan:** [x] Cohen's d / [ ] Eta-squared / [ ] Lainnya: ____
 
 ---
 
@@ -131,20 +131,20 @@ Tentukan uji statistik yang tepat untuk eksperimen Anda.
 Gunakan data berikut (atau data riil Anda) untuk berlatih interpretasi.
 
 **Data:**
-| Model | Accuracy (mean ± std) | n |
+| Model | RAM Pasca 180s (mean ± std) | n |
 |-------|----------------------|---|
-| A | 89.2 ± 1.5 | 10 |
-| B | 87.8 ± 2.1 | 10 |
+| Google Chrome (Intervensi) | 5214.3 ± 450.8 MB | 40 |
+| Mozilla Firefox (Baseline) | 3045.6 ± 180.5 MB | 40 |
 
-p = 0.045, Cohen's d = 0.74, CI 95% = [0.03, 2.77]
+p < 0.001, Cohen's d = 6.2, CI 95% = [1978.5, 2358.9]
 
 | Aspek | Interpretasi |
 |-------|-------------|
-| Signifikansi statistik | *Contoh: p < 0.05 → signifikan pada α=0.05* |
-| Effect size | *Contoh: d=0.74 → medium-to-large effect* |
-| Practical significance | |
-| Hubungan ke RQ | |
-| Perbandingan literatur | |
+| Signifikansi statistik | p < 0.001 → perbedaan konsumsi memori sangat signifikan pada tingkat α=0.001. |
+| Effect size | d=6.2 → efek sangat besar (huge effect), arsitektur browser mendikte konsumsi memori secara masif. |
+| Practical significance | Selisih 2.1 GB sangat esensial bagi stabilitas sistem operasi secara nyata pada laptop berspesifikasi pas-pasan. |
+| Hubungan ke RQ | Firefox menahan kapasitas memori secara lebih efisien dibandingkan Chrome saat menangani 40 tab pasif, menolak hipotesis penelitian. |
+| Perbandingan literatur | Sesuai dengan prinsip arsitektur mesin Gecko (Firefox) yang terpusat dibandingkan isolasi proses (sandboxing) Chromium (Chrome). |
 
 ---
 
@@ -152,22 +152,21 @@ p = 0.045, Cohen's d = 0.74, CI 95% = [0.03, 2.77]
 
 Latih kemampuan failure analysis: hipotesis TIDAK didukung. Apa yang bisa dipelajari?
 
-**Skenario:** Metode baru Anda mendapat F1 = 83.2%, baseline = 84.7%. p = 0.12 (tidak signifikan).
+**Skenario:** Hipotesis menyatakan fitur Memory Saver Chrome membebaskan RAM lebih banyak. Hasil eksperimen justru menunjukkan Firefox jauh lebih hemat memori hingga 2 GB. (H₁ ditolak).
 
 | Pertanyaan | Jawaban |
 |-----------|---------|
-| Apakah ini "gagal"? | *Contoh: Bukan gagal total — hipotesis tidak terdukung adalah temuan yang valid dan bisa menjadi kontribusi.* |
-| Kemungkinan penyebab? | *Contoh: Metode baru menambah kompleksitas komputasi (+40% waktu) tanpa peningkatan F1 yang cukup — overhead tidak sebanding.* |
-| Boundary condition? | *Contoh: Metode ini hanya efektif ketika data ≥ 10.000 record; di dataset kecil (<1.000), baseline lebih stabil.* |
-| Insight yang bisa diambil? | *Contoh: Ada trade-off ukuran data vs kompleksitas — rekomendasikan hybrid approach yang adaptif berdasarkan ukuran dataset.* |
-| Apakah layak dilaporkan? Mengapa? | *Contoh: Ya — negative result + boundary condition analysis adalah kontribusi riset yang diakui komunitas (ex: ACL, SIGIR). Mencegah riset duplikasi yang berulang.* |
+| Apakah ini "gagal"? | Bukan kegagalan riset. Hipotesis yang ditolak mengungkap bukti empiris objektif yang menyanggah asumsi atau klaim awal. |
+| Kemungkinan penyebab? | Fitur Memory Saver tidak bisa sepenuhnya mengatasi overhead dari arsitektur sandboxing Chrome yang mengharuskan tiap tab memiliki proses memorinya sendiri. |
+| Boundary condition? | Chrome mungkin berkinerja lebih efisien pada skenario multitasking ringan (di bawah 10 tab), namun gagal pada skala 40 tab. |
+| Insight yang bisa diambil? | Terdapat trade-off yang nyata antara keamanan isolasi proses dan efisiensi memori. Pengguna dengan prioritas kelancaran sistem lebih disarankan menggunakan Firefox. |
+| Apakah layak dilaporkan? Mengapa? | Sangat layak. Melaporkan temuan ini meluruskan disinformasi dan memberikan panduan optimasi yang valid tanpa unsur bias. |
 
 **Limitation terkait:**
 | Jenis | Ancaman | Dampak |
 |-------|---------|--------|
-| *Contoh: Statistical* | *Contoh: Hanya 5 run per skenario* | *Power test rendah* |
-| | | |
-| | | |
+| External Validity | URL pengujian statis/berita | Kesimpulan belum tentu berlaku jika membuka Web Apps berat (misal: Figma, Google Docs). |
+| Construct Validity | Hanya mengukur Private Bytes memori | Tidak memperhitungkan metrik lonjakan CPU (processor spike) ketika tab dibangunkan kembali (wake up). |
 
 ---
 
@@ -175,5 +174,5 @@ Latih kemampuan failure analysis: hipotesis TIDAK didukung. Apa yang bisa dipela
 
 > Apakah "failure" dalam riset benar-benar gagal, atau justru kontribusi? Bagaimana failure analysis mengubah cara Anda melihat hasil negatif?
 
-> ___________________________________________________
-> ___________________________________________________
+> Kegagalan hipotesis sama sekali bukan kegagalan penelitian, melainkan wujud nyata evaluasi ilmiah yang independen. Hasil temuan negatif mencegah peneliti lain melakukan asumsi yang salah dan membongkar batas operasional suatu arsitektur perangkat lunak.
+> Failure analysis menyadarkan bahwa data yang tidak sesuai ekspektasi bukanlah sebuah aib yang harus dimanipulasi, melainkan ruang untuk menemukan pengetahuan baru terkait batas maksimal kapabilitas sebuah sistem komputasi (boundary condition).

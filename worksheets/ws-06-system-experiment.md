@@ -1,4 +1,4 @@
-# WS-06: System-Experiment Mapping
+c:\Users\anj72\Downloads\4IKRA\New folder\zoomwhiteheads200x200.png c:\Users\anj72\Downloads\4IKRA\New folder\zoomkistik200x200.png c:\Users\anj72\Downloads\4IKRA\New folder\zoomnodul200x200.png c:\Users\anj72\Downloads\4IKRA\New folder\zoompostula200x200.png c:\Users\anj72\Downloads\4IKRA\New folder\zoompapula200x200.png c:\Users\anj72\Downloads\4IKRA\New folder\zoomblackheads200x200.jpg# WS-06: System-Experiment Mapping
 
 > **Bab 6 — System Design sebagai Experimental Artifact**
 

@@ -103,85 +103,90 @@ Reproducibility Check:
 
 ---
 
-## Latihan 1 — Environment Specification
+## Tugas 1 — Environment Specification
 
 Dokumentasikan environment untuk eksperimen Anda (boleh environment saat ini atau yang direncanakan).
 
 | Komponen | Spesifikasi |
 |----------|------------|
-| CPU | *Contoh: Intel Core i7-12700H, 14 Core* |
-| RAM | *Contoh: 32 GB DDR5* |
-| GPU | *Contoh: NVIDIA RTX 3060 6GB / CPU-only jika tidak ada GPU* |
-| OS | *Contoh: Ubuntu 22.04 LTS / Windows 11* |
-| Runtime | |
-| Framework | |
-| Random Seed | |
+| CPU | AMD Ryzen (Laptop Advan Workplus) |
+| RAM | 16 GB LPDDR5 |
+| GPU | AMD Radeon Integrated Graphics |
+| OS | Windows 11 Desktop (64-bit) |
+| Runtime | Python 3.10 (untuk agregasi dan analisis data CSV) |
+| Framework | N/A (Pengujian native di tingkat OS) |
+| Random Seed | N/A (Eksperimen tidak melibatkan model stokastik) |
 
 **Dependencies (minimal 5):**
 
-| Library | Version | Alasan Dibutuhkan |
+| Library/Software | Version | Alasan Dibutuhkan |
 |---------|---------|-------------------|
-| *Contoh: scikit-learn* | *1.3.2* | *Klasifikasi + evaluasi metrik* |
-| | | |
-| | | |
-| | | |
-| | | |
+| Google Chrome | Stable Terbaru | Objek eksperimen intervensi (pengujian fitur *Memory Saver*) |
+| Mozilla Firefox | Stable Terbaru | Objek eksperimen baseline (pengujian fitur *Tab Unloading*) |
+| Windows PerfMon | Bawaan OS | Instrumen utama perekam *Private Bytes* memori sistem secara objektif |
+| Pandas (Python) | 2.1.0 | Membersihkan dan mengagregasi data log dari 40 *repeated runs* |
+| Matplotlib (Python) | 3.8.0 | Memvisualisasikan grafik tren penurunan RAM sebelum dan sesudah 15 menit |
 
 ---
 
-## Latihan 2 — Repeatability Test Plan
+## Tugas 2 — Repeatability Test Plan
 
 Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment yang sama.
 
 | Run | Seed | Metrik Utama | Hasil Sama? |
 |-----|------|-------------|-------------|
-| 1 | *Contoh: 42* | *Contoh: Accuracy* | — |
-| 2 | | | [ ] Ya / [ ] Tidak |
-| 3 | | | [ ] Ya / [ ] Tidak |
+| 1 | N/A | Kapasitas RAM Terbebas (MB) | — |
+| 2 | N/A | Kapasitas RAM Terbebas (MB) | [ ] Ya / [x] Tidak (Akan ada deviasi nilai MB) |
+| 3 | N/A | Kapasitas RAM Terbebas (MB) | [ ] Ya / [x] Tidak (Akan ada deviasi nilai MB) |
 
 **Jika hasil berbeda, kemungkinan penyebab:**
 
-> Penyebab umum non-repeatability:
-> - **Thermal throttling** — CPU/GPU overheating pada run berturut-turut → clock speed turun → waktu eksekusi berubah
-> - **Background process** — antivirus scan, update OS, atau cloud sync aktif saat run berlangsung
-> - **Cache dari run sebelumnya** — hasil tersimpan di memori/disk sehingga run berikutnya tidak menjalankan komputasi penuh
-> - **Random state tidak dikontrol di semua level** — Python seed di-set, tapi NumPy/PyTorch/TensorFlow punya seed independen
+> Penyebab umum non-repeatability dalam pengukuran sistem memori:
+> - **Background process** — Layanan latar belakang Windows 11 (seperti *indexing*, pembaruan senyap, atau *antivirus*) aktif dan memakan/melepas RAM saat *run* berlangsung.
+> - **Thermal throttling** — CPU laptop mengalami panas berlebih setelah mengeksekusi puluhan tab secara berulang, sehingga menurunkan *clock speed* dan memperlambat waktu eksekusi pelepasan memori.
+> - **Cache dari run sebelumnya** — Data sisa dari sesi web sebelumnya belum terhapus sempurna, membuat beban *rendering* pada *run* berikutnya menjadi lebih ringan.
 
 ___________________________________________________
 
 **Checklist kontrol yang sudah diterapkan:**
-- [ ] Random seed di-set di semua level
-- [ ] Tidak ada background process yang mengganggu
-- [ ] Cache dibersihkan antar-run
-- [ ] Config file yang sama untuk semua run
+- [ ] Random seed di-set di semua level *(Tidak relevan untuk eksperimen ini)*
+- [x] Tidak ada background process yang mengganggu *(Aplikasi non-esensial dinonaktifkan)*
+- [x] Cache dibersihkan antar-run *(Menerapkan prosedur Clean Session)*
+- [x] Config file yang sama untuk semua run *(Menggunakan 40 URL identik)*
 
 ---
 
-## Latihan 3 — README Eksperimen
+## Tugas 3 — README Eksperimen
 
 Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
-```
-# Judul Eksperimen: ____________________
+# Judul Eksperimen: Analisis Komparatif Efisiensi Alokasi Memori RAM Berbasis Mekanisme Pembekuan Tab Pasif
 
 ## 1. Environment
-> (Salin spesifikasi dari Latihan 1)
+> Hardware: Advan Workplus (AMD Ryzen, 16 GB RAM).
+> OS: Windows 11 Desktop (64-bit).
+> Software: Google Chrome (Stable) dan Mozilla Firefox (Stable).
 
 ## 2. Installation
-> (Langkah instalasi, misal: "pip install -r requirements.txt")
+> 1. Unduh dan instal rilis stabil terbaru dari Google Chrome dan Mozilla Firefox tanpa ekstensi tambahan.
+> 2. Pastikan fitur Memory Saver (Chrome) dan Tab Unloading (Firefox) dalam keadaan aktif (enabled) di pengaturan.
+> 3. Siapkan Python 3.10 dan jalankan `pip install pandas matplotlib` untuk kebutuhan analisis log.
 
 ## 3. Data
-> (Deskripsi data: sumber, format, ukuran)
+> Input berupa file teks berisi 40 URL situs web bermuatan kaya media (portal berita, aplikasi web). Data output berupa file CSV log rekaman RAM dari Windows Performance Monitor.
 
 ## 4. Execution
-> (Command untuk menjalankan eksperimen)
+> 1. Jalankan Windows PerfMon dan mulai rekam counter *Private Bytes*.
+> 2. Buka Browser A pada kondisi *clean session*.
+> 3. Buka ke-40 URL secara bersamaan dan tunggu hingga seluruh elemen termuat.
+> 4. Biarkan browser berada di latar belakang selama 15 menit.
+> 5. Ekstrak data CSV, tutup browser, bersihkan riwayat dan cache, lalu ulangi iterasi hingga mencapai 40 putaran (*repeated runs*). Lakukan hal yang sama untuk Browser B.
 
 ## 5. Configuration
-> (File config yang digunakan + parameter kunci)
+> Tidak ada aplikasi komersial pihak ketiga yang berjalan di latar belakang (seperti platform game atau pemutar musik). Jendela browser tidak dijalankan dalam mode Incognito/Private agar mekanisme caching bawaan tetap berjalan normal.
 
 ## 6. Expected Output
-> (Contoh output yang diharapkan + format)
-```
+> Dua set dataset CSV yang merekam metrik konsumsi memori (MB). Data akan menampilkan nilai puncak (peak memory) saat pemuatan awal dan nilai terendah pasca 15 menit tab dibekukan.
 
 ---
 
@@ -189,6 +194,6 @@ Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 > Apakah eksperimen Anda saat ini bisa direproduksi oleh orang lain tanpa bantuan Anda? Komponen apa yang masih hilang?
 
-**Level saat ini:** [ ] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
+**Level saat ini:** [ ] Repeatability / [x] Reproducibility / [ ] Belum keduanya
 **Komponen yang belum terdokumentasi:**
-> ___________________________________________________
+> Skrip otomatisasi (misalnya menggunakan Selenium atau alat makro UI). Saat ini, pembukaan 40 tab diasumsikan dilakukan secara manual yang dapat memicu perbedaan jeda latensi akibat faktor manusia antar-putaran (*run*). Hal ini berisiko menciptakan bias mikro pada metrik pengukuran durasi (detik).

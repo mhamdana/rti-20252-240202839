@@ -87,17 +87,17 @@ Alignment Check:
 
 Gunakan RQ dari WS-04. Definisikan variabel dan metriknya.
 
-**RQ:** Apakah integrasi fitur hambatan mikro meningkatkan akurasi ETA pada model XGBoost?
+**RQ:** Apakah aktivasi fitur *Memory Saver* pada Google Chrome menghasilkan penghematan utilitas memori RAM absolut (MB) yang lebih besar dibandingkan *Tab Unloading* pada Mozilla Firefox ketika dieksekusi menangani 40 tab pasif secara serentak?
 
 | Variabel | Tipe | Konsep Abstrak | Metrik Konkret | Skala (NOIR) | Satuan |
 |----------|------|---------------|----------------|-------------|--------|
-| Algoritma | IV | Model Prediktif | XGBoost Standar vs XGBoost + Mikro | Nominal | — |
-| Densitas Hambatan| IV | Intensitas gangguan | Jumlah titik lampu merah per Km | Ratio| Titik/Km|
-| Akurasi ETA | DV | Error estimasi | MAPE | Ratio| % |
-| Waktu Aktual | CV | Realitas durasi | Total detik perjalanan | Ratio | Detik |
- 
+| Arsitektur Browser | IV | *Memory Engine* | Chromium (*Memory Saver*) vs Gecko (*Tab Unloading*) | Nominal | — |
+| Utilitas RAM Sistem | DV | *Memory Footprint* | Rentang alokasi *Private Bytes* pasca-jeda 180 detik | Ratio | Megabytes (MB) |
+| Beban Kerja Tab | CV | Stabilitas Tekanan | Pemuatan 40 alamat URL statis kaya media yang identik | Ratio | Unit Tab |
+| Durasi Fase Pasif | CV | Jendela Waktu | Batas waktu diam sebelum *counter* dicatat | Ratio | Detik |
+
 **Apakah ada lompatan logis dalam rantai?** [ ] Ya / [x] Tidak
-> Jika ya, di mana? Rantai sudah sinkron dari konsep abstrak (gangguan) ke hitungan konkret (jumlah titik/Km).
+> Jika ya, di mana? Rantai sudah sinkron sepenuhnya dari konsep abstrak (*memory footprint*) menuju variabel terukur yang eksak (*Private Bytes*) melalui perkakas ukur netral di level kernel OS Windows 11.
 
 ---
 
@@ -107,15 +107,15 @@ Evaluasi metrik DV yang dipilih di Latihan 1 menggunakan 3 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Representative | 5 | Sangat mewakili karena dalam transportasi, selisih 2 menit pada rute 10 menit lebih fatal dibanding rute 60 menit. |
-| Sensitive |4 | Peka terhadap perubahan kecil di level detik, namun bisa terdistorsi jika data aktual sangat kecil (mendekati nol).|
-| Feasible | 5 | Data waktu aktual tersedia di log GPS dan prediksi keluar dari model XGBoost; kalkulasi sangat mudah. |
+| Representative | 5 | *Private Bytes* sangat mewakili kapasitas RAM murni yang dialokasikan khusus oleh sistem operasi untuk sub-proses *browser*, bebas dari bias *shared memory*. |
+| Sensitive | 5 | Peka menangkap fluktuasi pelepasan ruang memori hingga tingkat desimal terkecil (Kilobytes), meminimalkan risiko terjadinya *ceiling effect*. |
+| Feasible | 5 | Sangat mudah diekstraksi secara terprogram dan berkala melalui jembatan performa *counter* Windows PerfMon ke dalam format berkas log. |
 
 **Apakah perlu secondary metric?** [x] Ya / [ ] Tidak
-> Jika ya, apa dan mengapa? RMSE (Root Mean Square Error). Karena MAPE tidak memberikan penalti besar pada outlier, RMSE diperlukan untuk mendeteksi jika ada error prediksi yang sangat ekstrem (misal: prediksi 10 menit tapi aslinya 40 menit).
+> Jika ya, apa dan mengapa? *Page File Bytes* (Utilisasi *Virtual Memory*). Karena penurunan drastis pada RAM fisik (*Private Bytes*) bisa jadi menipu jika sistem ternyata mengalihkan beban memori tersebut ke media penyimpanan lokal (*disk swapping*). Metrik sekunder ini diperlukan untuk memastikan pelepasan RAM benar-benar murni berupa efisiensi, bukan kompresi paksa.
 
 **Contoh kasus ceiling effect untuk metrik ini:**
-> Jika model sudah sangat akurat (error < 1%), penambahan fitur hambatan mikro mungkin tidak akan menunjukkan penurunan error lagi karena sudah mencapai batas limit akurasi data GPS itu sendiri.
+> Jika laptop yang digunakan memiliki RAM fisik yang sangat longgar (misalnya 64 GB) dan beban 40 tab hanya memakan <10% kapasitas, fitur penghemat memori dari kedua browser mungkin tidak akan menunjukkan perbedaan penurunan yang radikal karena tekanan *resource* belum menyentuh batas kritis sistem.
 
 ---
 
@@ -125,10 +125,10 @@ Bayangkan data yang akan dikumpulkan dari eksperimen. Evaluasi 4 dimensi kualita
 
 | Dimensi | Pertanyaan | Jawaban | Strategi Mitigasi |
 |---------|-----------|---------|------------------|
-| Completeness | *Apakah semua data point terkumpul?* | Ada risiko signal loss di area gedung tinggi (urban canyon). | Interpolasi titik koordinat yang hilang atau eliminasi perjalanan dengan gap > 30 detik. |
-| Consistency | *Apakah ada kontradiksi internal?* | Koordinat GPS melompat sehingga kecepatan terbaca tidak masuk akal. | Filtering data dengan ambang batas kecepatan maksimal ojek (misal: 80-100 km/jam). |
-| Validity | *Apakah benar-benar mengukur yang dimaksud?* | Data lampu merah di OSM mungkin tidak mencakup semua titik terbaru. | Sampling acak 10-20 titik menggunakan Google Street View untuk validasi keberadaan fisik hambatan. |
-| Representativeness | *Apakah sampel mewakili populasi target?* | Dataset mungkin didominasi perjalanan siang hari saja. | Melakukan stratifikasi pengambilan data agar mencakup jam sibuk (rush hour) dan jam sepi. |
+| Completeness | *Apakah semua data point terkumpul?* | Ada risiko skrip otomatisasi terhenti (*hang*) di tengah iterasi akibat kehabisan memori. | Mengonfigurasi skrip dengan mekanisme *error-handling* ketat untuk mendeteksi *crash*, mencatat titik kegagalan, dan melakukan *restart session*. |
+| Consistency | *Apakah ada kontradiksi internal?* | Nilai RAM awal terbaca lebih rendah dari nilai RAM pasca-pembebasan pada *run* tertentu. | Menerapkan waktu pendinginan (*cooldown interval*) selama 60 detik antar-run agar kondisi alokasi memori OS kembali ke status *baseline* yang bersih. |
+| Validity | *Apakah benar-benar mengukur yang dimaksud?* | Metrik RAM terdistorsi oleh aktivitas sub-proses eksternal OS host yang berjalan acak. | Menutup seluruh aplikasi non-esensial (*background apps*) secara total dan mematikan fitur *Windows Update* selama jendela pengujian berlangsung. |
+| Representativeness | *Apakah sampel mewakili populasi target?* | Karakteristik beban 40 tab hanya mewakili situs statis, bukan aplikasi web dinamis yang berat. | Melakukan stratifikasi pemilihan 40 URL agar mencakup kombinasi seimbang antara situs berita, portal media kaya gambar, dan dokumen statis. |
 
 ---
 
@@ -137,5 +137,6 @@ Bayangkan data yang akan dikumpulkan dari eksperimen. Evaluasi 4 dimensi kualita
 > Mengapa memilih metrik setelah melihat data dianggap p-hacking? Apa bedanya dengan eksplorasi data yang sah?
 
 **Jawaban:**
-> Memilih metrik setelah melihat data dianggap p-hacking karena peneliti bisa secara selektif memilih metrik yang secara kebetulan memberikan hasil signifikan (p-value rendah) untuk mendukung hipotesisnya, padahal itu mungkin hanya kebetulan statistik (noise). Ini mencederai integritas riset karena kesimpulan tidak lagi objektif.
-> Perbedaannya dengan eksplorasi data yang sah adalah tujuannya. Eksplorasi dilakukan di awal untuk memahami pola dan mencari anomali tanpa menarik kesimpulan final (hipotesis dibentuk di sini). Sedangkan dalam pengujian hipotesis (confirmatory), metrik harus dikunci di awal agar peneliti tidak bisa "menggeser gawang" untuk mendapatkan skor gol.
+> Memilih metrik setelah melihat data dikategorikan sebagai *p-hacking* karena membuka celah bagi peneliti untuk bertindak tidak jujur dengan cara "menggeser gawang" pengukuran. Peneliti dapat secara selektif memilah metrik mana saja yang secara kebetulan memunculkan nilai signifikansi statistik (*p-value* < 0.05) untuk memaksakan pembenaran hipotesisnya, sementara metrik yang menggagalkan hipotesis disembunyikan.
+> 
+> Perbedaan mendasar dengan eksplorasi data yang sah terletak pada tujuannya. Eksplorasi data bersifat terbuka (*exploratory*) dan dilakukan di awal untuk mengenali karakteristik data, memetakan anomali, serta merumuskan hipotesis baru tanpa menarik klaim final. Sementara itu, dalam pengujian hipotesis (*confirmatory*), metrik wajib dikunci sejak awal melalui desain eksperimen agar proses penarikan kesimpulan ilmiah berjalan objektif dan bebas dari bias konfirmasi.

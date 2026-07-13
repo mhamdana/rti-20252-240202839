@@ -103,14 +103,13 @@ Periksa dataset Anda (atau dataset contoh) dan dokumentasikan masalah yang ditem
 
 | Masalah | Jumlah Kasus | Penanganan | Justifikasi |
 |---------|-------------|------------|-------------|
-| *Contoh: Missing di kolom "label"* | *12 dari 500 (2.4%)* | *Listwise deletion* | *< 5%, distribusi random (MCAR)* |
-| | | | |
-| | | | |
-| | | | |
+| Nilai ekstrem / *Outlier* (Run 5 Chrome: 2100.50 MB) | 1 dari 80 (1.25%) | *Flag & separate* (Ditandai tanpa dihapus) | Penurunan drastis ini bukan *error* format, melainkan intervensi *disk swapping* OS Windows 11. Menghapusnya akan menghilangkan bukti perilaku riil sistem. |
+| *Missing values* | 0 dari 80 (0%) | Tidak ada tindakan | Seluruh eksekusi skrip otomatisasi berhasil merekam data log hingga selesai. |
+| Duplikat data | 0 dari 80 (0%) | Tidak ada tindakan | Setiap iterasi (*run*) memiliki rentang nilai RAM yang unik sesuai perilaku dinamis *browser*. |
 
-**Jumlah data sebelum cleaning:** ____
-**Jumlah data setelah cleaning:** ____
-**Persentase data yang hilang/berubah:** ____%
+**Jumlah data sebelum cleaning:** 80
+**Jumlah data setelah cleaning:** 80
+**Persentase data yang hilang/berubah:** 0%
 
 ---
 
@@ -120,16 +119,16 @@ Tentukan apakah data Anda perlu normalisasi, dan jika ya, metode apa yang tepat.
 
 | Variabel | Range Asli | Distribusi | Outlier? | Metode Normalisasi | Alasan |
 |----------|-----------|-----------|----------|-------------------|--------|
-| *Contoh: response_time* | *0.1 – 45.2s* | *Right-skewed* | *Ya (45.2s)* | *Robust scaling* | *Ada outlier, perlu robust* || *Contoh: accuracy_score* | *0.72 – 0.95* | *Normal, narrow* | *Tidak* | *Tidak perlu* | *Sudah dalam [0,1], metode berbasis distance tidak digunakan* || | | | | | |
+| Kapasitas RAM Terpakai | 2100.50 – 6078.18 MB | Cenderung normal dengan sedikit *skew* | Ya (Run 5) | Tidak perlu | Analisis komparasi statistik menggunakan besaran mutlak (MB), bukan melatih model algoritma. |
 | | | | | | |
 
-**Apakah normalisasi diperlukan?** [ ] Ya / [ ] Tidak
+**Apakah normalisasi diperlukan?** [ ] Ya / [x] Tidak
 **Justifikasi:**
-> ___________________________________________________
+> Pengukuran kapasitas memori menggunakan satuan mutlak (Megabytes) untuk analisis statistik deskriptif dan uji beda rata-rata (komparasi dua kelompok). Eksperimen ini tidak ditujukan untuk melatih algoritma *Machine Learning* yang sangat sensitif terhadap skala data. Menerapkan normalisasi justru akan mendistorsi makna besaran memori aslinya.
 
 **Leakage check:**
-- [ ] Parameter dihitung dari training set saja
-- [ ] Normalisasi diterapkan setelah train-test split
+- [x] Parameter dihitung dari training set saja *(N/A - Eksperimen komparasi non-ML)*
+- [x] Normalisasi diterapkan setelah train-test split *(N/A - Tidak ada split)*
 
 ---
 
@@ -137,20 +136,18 @@ Tentukan apakah data Anda perlu normalisasi, dan jika ya, metode apa yang tepat.
 
 Buat ringkasan preprocessing lengkap — dokumentasi yang cukup bagi orang lain untuk mereplikasi.
 
-```
 PREPROCESSING SUMMARY
 
-1. Dataset: ____________________
-2. Data awal: ____ records, ____ features
+1. Dataset: Log Utilisasi Memori RAM Browser (Chrome vs Firefox)
+2. Data awal: 80 records, 3 features (Browser, Run_ID, RAM_MB)
 3. Cleaning:
-   - Missing values: ____ kasus, metode: ____
-   - Duplikat: ____ kasus, tindakan: ____
-   - Error: ____ kasus, tindakan: ____
-4. Transformation: ____________________
-5. Normalisasi: ____ (metode), parameter dari ____
-6. Data akhir: ____ records, ____ features
-7. Leakage check: [ ] Lulus / [ ] Ada masalah
-```
+   - Missing values: 0 kasus, metode: -
+   - Duplikat: 0 kasus, tindakan: -
+   - Error (Outlier): 1 kasus, tindakan: Ditandai (flagged) untuk analisis spesifik mengenai disk swapping OS.
+4. Transformation: Data dipertahankan dalam nilai absolut (Megabytes).
+5. Normalisasi: Tidak diterapkan (metode), parameter dari N/A.
+6. Data akhir: 80 records, 3 features
+7. Leakage check: [x] Lulus / [ ] Ada masalah
 
 ---
 
@@ -158,5 +155,7 @@ PREPROCESSING SUMMARY
 
 > Apakah Anda pernah melakukan normalisasi "karena biasa dilakukan" tanpa mempertimbangkan apakah benar-benar diperlukan? Apa risiko over-preprocessing?
 
-> ___________________________________________________
-> ___________________________________________________
+**Pengalaman sebelumnya:**
+> Pada pengolahan data sebelumnya, langkah normalisasi seperti *Min-Max scaling* sering kali langsung diterapkan secara mekanis pada seluruh kumpulan kolom angka tanpa memahami tujuan akhirnya. 
+**Risiko over-preprocessing:**
+> Memaksa menghapus data pencilan atau menormalkan seluruh kolom pada eksperimen komputasi berisiko menghilangkan karakteristik murni dari objek yang diteliti. Membuang *outlier* pada kasus uji RAM ini sama saja dengan menutup mata terhadap fenomena *bottleneck* atau *disk swapping* yang secara nyata terjadi di lingkungan sistem operasi.

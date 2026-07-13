@@ -102,18 +102,18 @@ Problem Statement (1 paragraf):
 
 Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Problem Formation Model.
 
-**Topik awal:** Analisis Performa dan Manajemen Memori Runtime pada Aplikasi Web Modern.
+**Topik awal:** Analisis Performa dan Manajemen Memori pada Aplikasi Web Browser Modern.
 
 | Tahap | Hasil |
 |-------|-------|
-| Reality | Pengguna perangkat desktop dengan kapasitas memori terbatas sering mengalami kelambatan sistem saat membuka banyak tab browser sekaligus. |
-| Observed Issue (Symptom) | Terjadi penurunan responsivitas sistem operasi secara menyeluruh (lag/hang) dan lonjakan utilisasi RAM hingga mendekati batas maksimal. |
-| Diagnosed Problem (Root Cause) | Tingginya overhead footprint dan kebocoran memori (memory leak) pada sub-proses mesin rendering runtime saat mengeksekusi framework web modern yang sarat skrip berat. |
-| Researchable Problem | Evaluasi dan analisis komparatif dampak penggunaan WebAssembly (Wasm) vs JavaScript terhadap efisiensi manajemen alokasi heap memory dan execution performance aplikasi web. |
-| Measurable Variable | Jejak memori runtime (JSHeapUsedSize/Private Bytes dalam MB) dan metrik performa (Largest Contentful Paint/LCP dalam detik). |
+| Reality | Pengguna laptop dengan spesifikasi perangkat keras standar sering mengalami kelambatan sistem saat membuka puluhan tab penjelajah web secara bersamaan. |
+| Observed Issue (Symptom) | Terjadi penurunan responsivitas sistem (lag/hang) yang dipicu oleh lonjakan utilisasi RAM hingga menyentuh batas kapasitas maksimal perangkat. |
+| Diagnosed Problem (Root Cause) | Perbedaan arsitektur manajemen memori (*sandboxing* pada Chromium vs *multithreading* pada Gecko) menghasilkan beban konsumsi RAM yang berbeda, di mana belum diketahui secara pasti seberapa efektif fitur penghemat bawaan masing-masing bekerja pada skala masif. |
+| Researchable Problem | Evaluasi dan analisis komparatif mengenai tingkat efisiensi reduksi memori RAM secara absolut antara fitur *Memory Saver* (Google Chrome) dan *Tab Unloading* (Mozilla Firefox) saat dibebani puluhan tab pasif. |
+| Measurable Variable | Kapasitas RAM yang terpakai dan terbebas pasca-jeda waktu stabilisasi (*Private Bytes* dalam satuan Megabytes/MB). |
 
 **Apakah terjebak solution-first thinking?** [ ] Ya / [x] Tidak
-> Jika ya, kembali ke tahap mana? Tidak, karena analisis berakar dari fenomena degradasi performa hardware akibat beban kerja aplikasi web secara riil di lapangan.
+> Jika ya, kembali ke tahap mana? Tidak. Analisis berakar dari fenomena kebuntuan performa (bottleneck) komputasi fisik di lapangan akibat beban kerja *multi-tab*, bukan berangkat dari keinginan sekadar memvalidasi satu *browser* tertentu.
 
 ---
 
@@ -123,14 +123,14 @@ Gambarkan konteks sistem dari masalah riset di Latihan 1.
 
 | Komponen | Deskripsi |
 |----------|----------|
-| Input | Source code aplikasi web (skrip JavaScript / modul biner WebAssembly), interaksi user (pembukaan komponen halaman), dan alokasi resource awal hardware. |
-| Process | Eksekusi engine runtime penjelajah web, manajemen daur hidup heap memory, serta isolasi pemrosesan latar belakang (background process). |
-| Output | Visualisasi antarmuka halaman web interaktif dan visualisasi log tracing konsumsi resource memori. |
-| Outcome | Terwujudnya arsitektur aplikasi web modern lintas platform yang ringan, hemat daya, dan responsif tanpa membebani memori sistem. |
-| Constraints | Batasan kapasitas fisik memori RAM perangkat target (khususnya perangkat mobile/spesifikasi standar) dan limitasi kapabilitas pelaporan alat ukur memori internal browser. |
-| Stakeholders | Web Developers (Pengembang Perangkat Lunak), Penyedia Framework Web, dan End-Users (Pengguna Perangkat Spesifikasi Standar). |
+| Input | 40 URL situs web bermuatan kaya media (statis) yang dieksekusi secara otomatis, serta kondisi memori awal dari sistem operasi. |
+| Process | Pemuatan halaman web secara serentak oleh *engine browser* dan pemicuan fitur manajemen memori latar belakang (*Memory Saver* / *Tab Unloading*) selama fase pasif 180 detik. |
+| Output | Log perekaman nilai *Private Bytes* (MB) yang diekstrak secara berkala melalui instrumen Windows Performance Monitor. |
+| Outcome | Tersedianya acuan empiris dan objektif bagi pengguna laptop berspesifikasi pas-pasan dalam memilih arsitektur *browser* yang paling stabil untuk beban kerja ekstrem. |
+| Constraints | Batasan memori RAM fisik (16 GB), intervensi proses latar belakang acak dari sistem operasi (Windows 11), serta fenomena peralihan beban ke *disk swapping*. |
+| Stakeholders | Pengguna Akhir (*End-Users*) dengan perangkat spesifikasi standar, Pengembang Perangkat Lunak, dan Vendor Web Browser. |
 
-**Komponen mana yang paling relevan dengan masalah riset?** Process (Manajemen daur hidup heap memory dan eksekusi sub-proses engine runtime).
+**Komponen mana yang paling relevan dengan masalah riset?** Process (Pemicuan fitur manajemen memori latar belakang dari masing-masing arsitektur *browser* selama fase pasif).
 
 ---
 
@@ -140,16 +140,16 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Clarity | 5 | Sangat jelas; mendefinisikan batas tegas antara konsumsi resource komputasi runtime dan hambatan performa sistem fisik. |
-| Measurability | 5 | Menggunakan satuan ukuran data yang eksak (Megabytes) dan standar metrik audit performa web (detik) secara objektif. |
-| Relevance | 5 | Amat relevan dengan tren migrasi arsitektur aplikasi native menuju ekosistem Progressive Web Applications (PWA). |
-| Testability | 5 | Dapat diuji secara empiris melalui komparasi prototype fungsional di bawah kondisi beban kerja laboratorium terkontrol. |
-| Impact | 5 | Memberikan acuan arsitektural yang valid bagi pengembang dalam memitigasi isu kebocoran memori pada eksekusi runtime modern. |
+| Clarity | 5 | Sangat jelas; langsung memetakan korelasi antara perilaku fitur penghemat memori aplikasi dan beban komputasi tingkat kernel. |
+| Measurability | 5 | Menggunakan satuan ukuran absolut yang eksak (Megabytes) melalui instrumen perekam OS bawaan yang netral (PerfMon). |
+| Relevance | 5 | Amat relevan dengan kebiasaan komputasi modern di mana pengguna sering membiarkan banyak *tab* terbuka sebagai bentuk *multitasking*. |
+| Testability | 5 | Dapat diuji secara empiris melalui metodologi *comparison study* pada lingkungan eksperimen laboratorium dengan *clean session*. |
+| Impact | 5 | Memberikan wawasan arsitektural untuk menghindari klaim sepihak dari vendor *browser* mengenai efisiensi alokasi memori. |
 
 **Skor total:** 25 / 25
 
 **Problem statement versi final (1 paragraf):**
-> Tren pengembangan aplikasi web modern lintas platform yang sarat akan skrip berat sering memicu lonjakan konsumsi heap memory pada sub-proses mesin rendering penjelajah web. Bagi pengguna perangkat berspesifikasi standar atau mobile, tingginya footprint runtime ini mengakibatkan degradasi performa komputasi di tingkat kernel berupa kelambatan sistem secara menyeluruh (lag/hang) akibat operasi disk swapping. Meskipun teknologi WebAssembly (Wasm) hadir menawarkan Lightweight Isolation dan Secure Memory Sandbox, belum ada data evaluatif empiris yang komprehensif mengenai tingkat efisiensi alokasi memori nyata dan responsivitas pemulihannya dibandingkan dengan JavaScript di bawah kondisi beban kerja yang identik. Penelitian ini bertujuan untuk memetakan performa jejak memori (memory traces) kedua arsitektur runtime secara kuantitatif guna meminimalkan nilai overhead footprint sistem penjelajah web.
+> Penggunaan aplikasi penjelajah web dalam skenario *multi-tab* masif sering memicu lonjakan konsumsi memori yang mengakibatkan penurunan performa sistem (*lag/hang*) secara menyeluruh, terutama bagi pengguna laptop berspesifikasi standar. Meskipun Google Chrome dan Mozilla Firefox telah mengimplementasikan fitur manajemen memori bawaan (*Memory Saver* dan *Tab Unloading*), terdapat kesenjangan data evaluatif empiris mengenai perbedaan efektivitas reduksi RAM secara nyata di antara arsitektur Chromium dan Gecko saat menangani beban kerja berat. Penelitian ini bertujuan untuk menginvestigasi apakah fitur *Memory Saver* pada Chrome mampu menghasilkan retensi memori RAM yang lebih efisien dibandingkan *Tab Unloading* pada Firefox saat dieksekusi menangani 40 tab pasif. Pemetaan performa memori secara kuantitatif ini krusial guna memberikan rekomendasi arsitektur yang paling kebal terhadap kelambatan sistem akibat *bottleneck* komputasi.
 
 ---
 
@@ -158,4 +158,4 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 > Bandingkan "masalah" yang biasa ditemui saat coding (bug, error) dengan masalah riset. Apa perbedaan fundamental dalam cara mendefinisikan dan mendekati keduanya?
 
 **Jawaban:**
-> Perbedaan fundamentalnya terletak pada status operasional sistem, tujuan akhir, dan metodologi penyelesaiannya. Masalah saat coding berupa bug atau error teknis ditandai dengan kegagalan crash atau berhentinya fungsionalitas sistem (sistem tidak berjalan), sehingga pendekatannya adalah perbaikan kode secara instan atau local debugging agar fitur kembali berfungsi normal. Sebaliknya, masalah riset (research problem) berfokus pada gap performa, ketidakstabilan alokasi resource, atau ketidakoptimalan sistem (sistem sudah berjalan dengan baik, tetapi perilakunya belum dipahami sepenuhnya). Pendekatannya tidak melulu memperbaiki error saat itu juga, melainkan mengisolasi variabel, mengunci konfigurasi kontrol, dan mengumpulkan data kuantitatif melalui eksperimen berulang (repeated runs) demi menghasilkan kontribusi pengetahuan empiris yang terstandarisasi dan dapat direplikasi oleh peneliti lain.
+> Perbedaan fundamentalnya terletak pada objektivitas akhir. Masalah saat *coding* (seperti galat *Out of Memory* atau *crash*) adalah masalah teknis yang menuntut perbaikan perbaikan instan agar program kembali berjalan normal (*engineering mindset*). Di sisi lain, masalah riset mendefinisikan fenomena tersebut sebagai celah pengetahuan (*knowledge gap*). Saat OS menjadi lambat karena RAM penuh, riset tidak mencari cara menambal kodenya saat itu juga, melainkan merancang eksperimen terkontrol dengan instrumen *logging* yang ketat (seperti perekaman 40 *repeated runs* pasca-jeda 180 detik) untuk memahami pola aslinya. Pendekatannya adalah observasi tanpa memihak demi menghasilkan kesimpulan statistik yang valid dan dapat diandalkan oleh komunitas ilmiah.

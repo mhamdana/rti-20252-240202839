@@ -103,24 +103,24 @@ Hypothesis Pair:
 
 Gunakan gap yang ditemukan di WS-03. Transformasikan menjadi Research Question.
 
-**Gap dari WS-03:** Akurasi prediksi ETA sering meleset karena model gagal mendeteksi lonjakan durasi di lampu merah dan titik balik ojek online.
+**Gap dari WS-03:** Belum ada evaluasi empiris independen berskala masif (beban 40 tab) yang membandingkan secara langsung efisiensi reduksi RAM antara fitur bawaan mutakhir Google Chrome dan Mozilla Firefox menggunakan instrumen netral tingkat sistem operasi.
 
 **RQ versi pertama (tulis bebas):**
-> Bagaimana pengaruh lampu merah terhadap akurasi ojek online?
+> Apakah Google Chrome lebih efektif dalam menghemat RAM dibandingkan Firefox?
 
 **Evaluasi RQ:**
 
 | Komponen | Ada? | Isi |
 |----------|------|-----|
-| Metode spesifik | ya | XGBoost Regressor |
-| Metrik terukur | ya | MAPE |
-| Baseline | ya | XGBoost Standar |
-| Dataset/konteks | ya | Data ojek online urban |
+| Metode spesifik | ya | Arsitektur Chromium (*Memory Saver*) |
+| Metrik terukur | ya | Kapasitas RAM terbebas/terlepas (MB) |
+| Baseline | ya | Arsitektur Gecko (*Tab Unloading* Firefox) |
+| Dataset/konteks | ya | Lingkungan Windows 11, beban statis 40 tab pasif |
 
-**Tipe RQ:** [ ] Comparison / [x] Improvement / [ ] Exploratory
+**Tipe RQ:** [x] Comparison / [ ] Improvement / [ ] Exploratory
 
 **RQ versi revisi (setelah evaluasi):**
-> "Apakah modifikasi model XGBoost dengan penambahan variabel durasi hambatan mikro dapat meningkatkan akurasi prediksi (menurunkan MAPE) dibandingkan dengan model XGBoost standar pada rute padat ojek online?"
+> "Apakah aktivasi fitur *Memory Saver* pada Google Chrome menghasilkan penghematan utilitas memori RAM absolut (MB) yang lebih besar dibandingkan *Tab Unloading* pada Mozilla Firefox ketika dieksekusi menangani 40 tab pasif secara serentak?"
 
 ---
 
@@ -130,14 +130,14 @@ Rumuskan pasangan hipotesis dari RQ di Latihan 1.
 
 | Komponen | Isi |
 |----------|-----|
-| H₀ | Tidak ada penurunan signifikan pada MAPE setelah penambahan fitur hambatan mikro pada model. |
-| H₁ | Model dengan fitur hambatan mikro menghasilkan MAPE yang lebih rendah secara signifikan (p < 0.05). |
-| Metrik | MAPE (Mean Absolute Percentage Error) |
-| Threshold | Penurunan MAPE ≥ 5% |
-| Justifikasi threshold | Batas minimal efisiensi yang dianggap berdampak pada kepuasan pengguna di industri transportasi. |
+| H₀ | Tidak terdapat perbedaan rata-rata penghematan kapasitas memori RAM (MB) yang signifikan antara Google Chrome dan Mozilla Firefox pada beban 40 tab pasif. |
+| H₁ | Google Chrome menghasilkan penghematan memori RAM absolut (MB) yang lebih besar secara signifikan (p < 0.05) dibandingkan Mozilla Firefox. |
+| Metrik | Kapasitas RAM (*Private Bytes*) yang berhasil dibebaskan pasca mode *idle* (Megabytes). |
+| Threshold | Signifikansi statistik *p-value* < 0.05. |
+| Justifikasi threshold | Menggunakan standar interval kepercayaan 95% untuk memastikan bahwa selisih memori yang terjadi benar-benar akibat perbedaan arsitektur, bukan karena fluktuasi acak (*background noise*) sistem operasi. |
 
 **Apakah hipotesis ini falsifiable?** [x] Ya / [ ] Tidak
-> Bagaimana cara membuktikannya salah? Jika hasil pengujian menunjukkan p-value > 0.05 atau MAPE model baru justru lebih tinggi/sama dengan baseline.
+> Bagaimana cara membuktikannya salah? H₀ akan dipertahankan (dan hipotesis awal terbantahkan) jika uji beda statistik menunjukkan nilai *p-value* > 0.05, atau jika data justru menunjukkan Firefox membebaskan RAM jauh lebih besar daripada Chrome.
 
 ---
 
@@ -147,15 +147,15 @@ Lengkapi rantai dari RQ hingga metode analisis.
 
 | Tahap | Isi |
 |-------|-----|
-| RQ | Apakah integrasi fitur hambatan mikro meningkatkan akurasi ETA? |
-| Variable (IV) | Fitur hambatan mikro (titik koordinat lampu merah & U-turn). |
-| Variable (DV) | Error prediksi (MAPE).|
-| Metric | Persentase selisih waktu prediksi vs waktu aktual.|
-| Data source | GPS history logs & OpenStreetMap (untuk data lampu merah).|
-| Analysis method | Uji komparatif performa model (T-Test pada hasil MAPE).|
+| RQ | Apakah *Memory Saver* Chrome menghemat RAM lebih besar dari Firefox pada beban 40 tab pasif? |
+| Variable (IV) | Jenis Arsitektur *Browser* (Chromium vs Gecko). |
+| Variable (DV) | Kapasitas utilitas memori RAM perangkat. |
+| Metric | Selisih *Private Bytes* memori dalam satuan Megabytes (MB). |
+| Data source | Log ekstraksi *counter* Windows Performance Monitor (PerfMon) dari 80 *repeated runs*. |
+| Analysis method | Uji komparatif beda rata-rata dua kelompok independen (*Independent Sample T-Test*). |
 
 **Apakah rantai lengkap?** [x] Ya / [ ] Tidak
-> Jika tidak, tahap mana yang perlu direvisi? ______________
+> Jika tidak, tahap mana yang perlu direvisi? -
 
 ---
 
@@ -163,6 +163,6 @@ Lengkapi rantai dari RQ hingga metode analisis.
 
 > Ambil satu judul skripsi/paper yang pernah dibaca. Coba ekstrak RQ-nya. Apakah RQ tersebut memenuhi semua komponen (metode, metrik, baseline, konteks)? Jika tidak, apa yang hilang?
 
-**Judul:** Optimasi Akurasi ETA Ojek Online melalui Integrasi Hambatan Mikro (Lampu Merah & Putar Balik) di Indonesia (Ahmad Fauzi, 2024)
-**RQ yang diekstrak:** "Bagaimana meningkatkan akurasi prediksi permintaan dan rute ojek online menggunakan Machine Learning?"
-**Komponen yang hilang:** RQ tersebut kehilangan metrik terukur yang spesifik (seperti MAPE atau RMSE) dan tidak menyebutkan baseline secara eksplisit dalam pertanyaannya, sehingga sulit untuk menentukan kapan riset tersebut dianggap berhasil secara kuantitatif.
+**Judul:** Evaluation of Rust and WebAssembly when building a Progressive Web Application: An analysis of performance and memory usage (Asegehegn, 2022).
+**RQ yang diekstrak:** "Bagaimana performa dan penggunaan memori aplikasi PWA berbasis Rust/Wasm dibandingkan dengan kerangka kerja berbasis JavaScript?"
+**Komponen yang hilang:** RQ dalam literatur tersebut kehilangan metrik terukur yang spesifik (tidak menyebutkan *Lighthouse FCP* atau ukuran blok *Heap* dalam pertanyaan utamanya) serta gagal mendefinisikan batasan konteks beban kerja (seperti besaran *DOM nodes* atau jenis *environment*), sehingga parameter pembuktian keberhasilannya menjadi ambigu di awal.

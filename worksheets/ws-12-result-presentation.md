@@ -92,17 +92,16 @@ Bias Check:
 
 Buat tabel hasil eksperimen Anda (boleh dengan data simulasi jika belum punya data riil).
 
-| Skenario | Metrik 1 (mean ± std) | Metrik 2 (mean ± std) | n |
+| Skenario | Kapasitas RAM Peak (MB) | RAM Pasca 180s (MB) | n |
 |----------|----------------------|----------------------|---|
-| *Contoh: BERT-base* | *88.4 ± 1.2%* | *45.2 ± 3.1 min* | *10* |
-| | | | |
-| | | | |
+| Google Chrome (Intervensi) | 6120.5 ± 350.2 | 5214.3 ± 450.8 | 40 |
+| Mozilla Firefox (Baseline) | 4500.2 ± 250.4 | 3045.6 ± 180.5 | 40 |
 
 **Checklist tabel:**
-- [ ] Self-contained (judul jelas, satuan ada, N tercantum)
-- [ ] Mean ± std (bukan single number)
-- [ ] Diurutkan berdasarkan metrik utama
-- [ ] Format konsisten di semua baris
+- [x] Self-contained (judul jelas, satuan ada, N tercantum)
+- [x] Mean ± std (bukan single number)
+- [x] Diurutkan berdasarkan metrik utama
+- [x] Format konsisten di semua baris
 
 ---
 
@@ -112,9 +111,8 @@ Rencanakan 2-3 grafik untuk menyajikan data dari Latihan 1. Setiap grafik = satu
 
 | # | Jenis Grafik | Pesan | Data yang Digunakan |
 |---|-------------|-------|---------------------|
-| 1 | *Contoh: Bar chart + error bar* | *Perbandingan accuracy antar 3 model* | *Mean accuracy ± std* |
-| 2 | *Box plot* | *Distribusi F1 per model* | *Semua run F1* |
-| 3 | *Scatter plot* | *Trade-off accuracy vs training time* | *Mean accuracy vs mean time* |
+| 1 | Bar chart (grouped) + error bar | Perbandingan rata-rata memori awal (peak) dan pasca 180s antara Chrome dan Firefox | Mean RAM Peak & Mean RAM Pasca 180s ± std |
+| 2 | Box plot | Distribusi sebaran konsumsi RAM pasca 180s dan visualisasi *outlier* (seperti efek *disk swapping*) | Seluruh 40 data mentah RAM Pasca 180s |
 
 ---
 
@@ -126,14 +124,14 @@ Evaluasi visualisasi berikut untuk bias (skenario dari contoh):
 
 | Pertanyaan | Jawaban |
 |-----------|---------|
-| Apakah Y-axis menyesatkan? | *Contoh: Ya — A terlihat 2× B padahal beda 0.4%* |
-| Apakah error bar ditampilkan? | |
-| Apakah semua kondisi ditampilkan? | |
-| Apa solusinya? | |
+| Apakah Y-axis menyesatkan? | Ya — Memulai Y-axis dari 90% membuat grafik Metode A secara visual tampak dua kali lipat lebih tinggi dari B, padahal selisih aslinya hanya 0.4%. |
+| Apakah error bar ditampilkan? | Tidak — Mengaburkan informasi variabilitas; kita tidak tahu apakah selisih 0.4% itu signifikan atau hanya tumpang tindih (*overlap*) *noise* statistik. |
+| Apakah semua kondisi ditampilkan? | Terindikasi tidak — Berpotensi *cherry-picking* jika sebenarnya ada metode C atau D yang disembunyikan. |
+| Apa solusinya? | Mulai rentang Y-axis dari 0, tambahkan garis standar deviasi (*error bar*), dan tampilkan seluruh populasi skenario pengujian tanpa seleksi bias. |
 
 **Evaluasi grafik Anda sendiri dari Latihan 2:**
-- [ ] Semua bias check lulus
-- [ ] Ada yang perlu diperbaiki: ____
+- [x] Semua bias check lulus
+- [ ] Ada yang perlu diperbaiki: -
 
 ---
 
@@ -141,5 +139,7 @@ Evaluasi visualisasi berikut untuk bias (skenario dari contoh):
 
 > Mengapa tabel dan grafik keduanya diperlukan — tidak cukup salah satu saja? Pernahkah Anda membuat grafik yang (tanpa sengaja) menyesatkan?
 
-> ___________________________________________________
-> ___________________________________________________
+**Jawaban:**
+> Keduanya saling melengkapi. Tabel menyediakan angka absolut dan tingkat presisi (*mean* dan *std*) yang esensial untuk memverifikasi perhitungan serta signifikansi statistik. Sebaliknya, grafik menerjemahkan rentetan angka tersebut menjadi pola visual, tren, dan sebaran anomali (*outlier*) yang jauh lebih cepat dipahami secara intuitif oleh pembaca.
+> 
+> Pernah. Pada pembuatan laporan tugas sebelumnya, saya sering menggunakan *bar chart* dengan skala Y-axis yang dipotong (tidak mulai dari 0) hanya agar perbedaan performa antar komponen terlihat mencolok. Selain itu, saya kerap kali hanya menampilkan angka rata-rata tunggal tanpa *error bar*, sehingga menyembunyikan ketidakstabilan sistem dari pembaca.

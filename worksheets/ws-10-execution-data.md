@@ -96,15 +96,15 @@ Susun execution plan untuk eksperimen Anda. Tentukan skenario, jumlah run, dan s
 
 | Run # | Skenario | Seed | Parameter Kunci | Status |
 |-------|----------|------|----------------|--------|
-| *1* | *Contoh: BERT-base, DS-1* | *42* | *lr=2e-5, epoch=10* | *Planned* |
-| *2* | *BERT-base, DS-1* | *123* | *lr=2e-5, epoch=10* | *Planned* |
-| 3 | | | | |
-| 4 | | | | |
-| 5 | | | | |
+| *1* | *Google Chrome (Intervensi)* | *N/A* | *40 Tab Otomatis, Idle 180s* | *Selesai* |
+| *2* | *Google Chrome (Intervensi)* | *N/A* | *40 Tab Otomatis, Idle 180s* | *Selesai* |
+| 41 | Mozilla Firefox (Baseline) | N/A | 40 Tab Otomatis, Idle 180s | Selesai |
+| 42 | Mozilla Firefox (Baseline) | N/A | 40 Tab Otomatis, Idle 180s | Selesai |
+| ... | (Dan seterusnya hingga 80 run) | N/A | 40 Tab Otomatis, Idle 180s | Selesai |
 
-**Total skenario:** ____
-**Run per skenario:** ____
-**Total run keseluruhan:** ____
+**Total skenario:** 2 (Chrome vs Firefox)
+**Run per skenario:** 40
+**Total run keseluruhan:** 80
 
 ---
 
@@ -115,25 +115,25 @@ Desain format data log untuk eksperimen Anda. Tentukan field apa saja yang akan 
 **Identitas:**
 | Field | Contoh |
 |-------|--------|
-| Run ID | *run-001* |
-| Timestamp | *2025-03-15T10:30:00* |
-| | |
+| Run ID | *CHR-001 / FFX-001* |
+| Timestamp | *2026-07-13T10:30:00* |
+| Skenario | *Kondisi Intervensi / Baseline* |
 
 **Konfigurasi:**
 | Field | Contoh |
 |-------|--------|
-| Seed | *42* |
-| Code version | *commit abc1234* |
-| | |
+| Seed | *N/A (Urutan statis)* |
+| Code version | *Script Python Automation v1* |
+| Lingkungan | *Windows 11, Clean Session* |
 
 **Hasil:**
 | Metrik | Tipe Data | Range Valid |
 |--------|----------|-------------|
-| *Contoh: Accuracy* | *float* | *0.0 – 1.0* |
-| | | |
-| | | |
+| *Total RAM Terpakai (Pasca 180s)* | *float* | *0.0 – 16000.0 (MB)* |
+| Total RAM Awal (Peak) | float | 0.0 – 16000.0 (MB) |
+| Total RAM Terbebas | float | > 0.0 (MB) |
 
-**Format output:** [ ] CSV / [ ] JSON / [ ] Database / [ ] Lainnya: ____
+**Format output:** [x] CSV / [ ] JSON / [ ] Database / [x] Lainnya: TXT Log
 
 ---
 
@@ -143,10 +143,10 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 
 | Jenis Anomali | Contoh | Tindakan |
 |---------------|--------|----------|
-| Run gagal (crash) | *Contoh: OOM pada batch_size=64* | *Contoh: Dokumentasi, re-run batch_size=32, catat perubahan* |
-| Hasil ekstrem | | |
-| Waktu eksekusi anomali | | |
-| Inkonsistensi dengan run lain | | |
+| Run gagal (crash) | *Contoh: Script terhenti / OOM saat load 40 tab* | *Contoh: Dokumentasikan titik crash, restart OS, dan ulangi eksekusi run tersebut* |
+| Hasil ekstrem | Kapasitas RAM turun drastis secara tidak wajar (indikasi disk swapping). | Lakukan investigasi metrik Page File. Jika swapping aktif, tandai run sebagai outlier. |
+| Waktu eksekusi anomali | Pemuatan awal 40 tab memakan waktu sangat lama (koneksi tidak stabil). | Hentikan skrip Python, periksa status internet, dan ulangi run saat bandwidth stabil. |
+| Inkonsistensi dengan run lain | Terdapat lonjakan memori akibat background process saat fase idle. | Periksa Task Manager Windows. Diskualifikasi run yang terinterferensi update OS, lalu re-run. |
 
 **Prinsip:** Detect → Investigate → Document → Decide
 
@@ -157,6 +157,6 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 > Pernahkah Anda melaporkan hasil riset/tugas dari single run? Apa risikonya? Bagaimana multiple run mengubah kepercayaan terhadap hasil?
 
 **Pengalaman sebelumnya:**
-> ___________________________________________________
+> Dalam praktikum infrastruktur sistem sebelumnya, pengujian performa sering kali hanya dicatat satu kali (single run). Risikonya sangat tinggi karena angka yang terekam sangat rentan mengalami bias akibat fluktuasi noise dari proses latar belakang sistem operasi (Windows 11) maupun fluktuasi suhu perangkat keras.
 **Yang akan dilakukan berbeda:**
-> ___________________________________________________
+> Melakukan perekaman menggunakan skrip otomatisasi Python dengan mengulang eksekusi sebanyak 40 repeated runs (dengan jeda 180 detik). Hal ini akan menghasilkan distribusi data rata-rata yang stabil dan kebal terhadap anomali acak, sehingga kesimpulan akhir komparasi RAM jauh lebih kredibel.

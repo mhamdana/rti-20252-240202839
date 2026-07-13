@@ -116,13 +116,13 @@ Buat outline paper untuk riset Anda menggunakan struktur IMRAD.
 
 | Section | Konten Utama (2-3 kalimat) | Target Kata |
 |---------|---------------------------|------------|
-| Abstract | *Contoh: Sistem rekomendasi memiliki akurasi tinggi tapi satisfaction rendah. Studi ini menguji CF+context signal. Hasil: satisfaction naik 38% tanpa penurunan RMSE signifikan.* | 200-250 |
-| Introduction | *Contoh: Konteks: gap antara akurasi dan kepuasan pengguna. Gap: tidak ada studi yang mengkombinasikan CF+context. RQ: apakah CF+context meningkatkan satisfaction?* | 500-700 |
-| Related Work | | 700-1000 |
-| Method | | 800-1200 |
-| Results | | 500-800 |
-| Discussion | | 600-900 |
-| Conclusion | | 200-400 |
+| Abstract | Eksperimen komparatif menguji efisiensi reduksi RAM antara fitur *Memory Saver* Chrome dan *Tab Unloading* Firefox pada skenario beban 40 tab. Hasil pengujian menunjukkan Firefox secara signifikan menghemat kapasitas RAM 2.1 GB lebih besar dibandingkan Chrome. | 200-250 |
+| Introduction | Konteks: Lonjakan utilisasi RAM memicu perlambatan sistem pada beban kerja *multi-tab*. Gap: Kurangnya evaluasi empiris independen mengenai efektivitas reduksi memori Chrome berhadapan dengan Firefox. RQ: Apakah *Memory Saver* Chrome membebaskan kapasitas RAM lebih besar dibandingkan Firefox saat menangani 40 tab pasif? | 500-700 |
+| Related Work | Kajian arsitektur manajemen memori *Chromium* (*sandboxing* proses isolasi mandiri) berhadapan dengan *Gecko* (*multithreading* terpusat). Pembahasan mekanisme pertukaran data *virtual memory* (*disk swapping*) pada tingkat kernel Windows. | 700-1000 |
+| Method | Desain pengujian menggunakan skrip otomatisasi Python untuk memuat 40 URL identik secara serentak di lingkungan Windows 11. Pengukuran absolut *Private Bytes* memori direkam oleh *Windows PerfMon* setelah jeda stabilisasi konstan selama 180 detik. | 800-1200 |
+| Results | Google Chrome mencatatkan rata-rata retensi memori pasca-jeda sebesar 5214.3 ± 450.8 MB. Mozilla Firefox mencatatkan retensi memori yang jauh lebih efisien di angka 3045.6 ± 180.5 MB dengan perbedaan signifikan secara statistik (p < 0.001). | 500-800 |
+| Discussion | Isolasi proses mandiri pada *Chromium* membatasi efisiensi penghematan RAM secara masif pada batas atas (40 tab). Firefox menahan alokasi memori secara sentralistik sehingga lebih ideal untuk laptop berspesifikasi standar. | 600-900 |
+| Conclusion | Hipotesis awal ditolak; Firefox terbukti jauh lebih efisien mereduksi RAM. Kontribusi riset ini membongkar keterbatasan skalabilitas fitur *Memory Saver* Chrome dan menyajikan referensi arsitektur penjelajah web yang objektif. | 200-400 |
 
 ---
 
@@ -130,24 +130,22 @@ Buat outline paper untuk riset Anda menggunakan struktur IMRAD.
 
 Buat consistency matrix untuk memverifikasi internal consistency paper Anda.
 
-|  | Intro | Method | Result | Discussion | Conclusion |
+| | Intro | Method | Result | Discussion | Conclusion |
 |--|-------|--------|--------|-----------|-----------|
-| *Contoh: RQ1* | *✓* | *✓* | *✓* | *✓* | *✓* |
-| *Contoh: Metrik-X* | *✗ ←* | *✗ ←* | *✓* | *✗ ←* | *✗ ←* |
-| RQ1 | | | | | |
-| RQ2 | | | | | |
-| Metrik utama | | | | | |
-| Variabel IV | | | | | |
-| Variabel DV | | | | | |
-| Klaim/kontribusi | | | | | |
+| RQ1: Efisiensi memori Chrome vs Firefox | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Metrik Waktu Eksekusi Pelepasan RAM | ✓ | ~ | ✗ | ✗ | ✗ |
+| Metrik Utama: Selisih RAM Terbebas (MB) | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Variabel IV: Arsitektur Browser | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Variabel DV: Kapasitas Memori | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Klaim: Firefox lebih hemat RAM | ✗ | ✗ | ✓ | ✓ | ✓ |
 
 **Isi setiap sel:** ✓ (ada & konsisten), ✗ (missing), ~ (ada tapi inkonsisten)
 
 **Inkonsistensi yang ditemukan:**
-> ___________________________________________________
+> Rancangan metrik waktu (durasi pelepasan RAM dalam detik) sempat tercatat di kerangka awal (Introduction dan Method), namun data ini didrop pada tahap eksekusi karena tertutupi oleh waktu jeda konstan 180 detik dari skrip otomatisasi. Data ini sama sekali absen di bagian Result dan Discussion.
 
 **Tindakan perbaikan:**
-> ___________________________________________________
+> Menghapus seluruh penyebutan variabel metrik waktu/detik dari draf Introduction dan Method untuk menjaga *red thread* tetap konsisten, serta memfokuskan alur argumen murni pada selisih kapasitas absolut RAM (Megabytes).
 
 ---
 
@@ -156,16 +154,16 @@ Buat consistency matrix untuk memverifikasi internal consistency paper Anda.
 Ambil satu paragraf dari tulisan Anda (atau tulis paragraf baru) dan evaluasi kualitasnya.
 
 **Paragraf asli:**
-> (tempel paragraf Anda di sini)
+> Pada pengujian yang dilakukan, Chrome memiliki performa yang kurang baik dibanding Firefox. Memori yang dipakai masih sangat besar setelah ditunggu. Hal ini membuktikan bahwa fitur dari Chrome tidak berhasil menurunkan beban laptop saat buka banyak tab.
 
 | Kriteria | Evaluasi | Perbaikan |
 |----------|---------|-----------|
-| Clarity | *Contoh: kalimat ke-3 ambigu — "performa" bisa berarti accuracy atau speed* | *Ubah menjadi: "accuracy meningkat..."* |
-| Precision | | |
-| Conciseness | | |
+| Clarity | Kalimat pertama ambigu; kata "performa" tidak merujuk pada metrik terukur. | Ubah menjadi perbandingan langsung nilai kapasitas memori pasca-jeda. |
+| Precision | Frasa "kurang baik", "sangat besar", dan "setelah ditunggu" tidak eksak dan terlalu kasual. | Cantumkan angka rata-rata MB, parameter waktu 180 detik, dan nilai signifikansi statistik. |
+| Conciseness | Kalimat terakhir bertele-tele dan berisi kata *filler*. | Padatkan penjelasan keterkaitan fitur dengan arsitektur penjelajah web. |
 
 **Paragraf setelah perbaikan:**
-> (tulis paragraf yang sudah diperbaiki)
+> Google Chrome mencatat retensi kapasitas RAM pasca-jeda 180 detik sebesar 5214.3 MB, lebih tinggi secara signifikan (p < 0.001) dibandingkan Mozilla Firefox (3045.6 MB). Arsitektur isolasi proses pada Chromium menahan pelepasan memori sistem secara masif, sehingga fitur penghematan bawaan kurang optimal saat menangani skala 40 tab.
 
 ---
 
@@ -173,5 +171,7 @@ Ambil satu paragraf dari tulisan Anda (atau tulis paragraf baru) dan evaluasi ku
 
 > Apa perbedaan antara menulis "tentang" riset dan menulis sebagai "argumen" riset? Bagaimana urutan penulisan (Method → Discussion → Introduction) mengubah kualitas tulisan?
 
-> ___________________________________________________
-> ___________________________________________________
+**Jawaban:**
+> Menulis "tentang" riset hanya menghasilkan laporan kronologis yang menyerupai buku harian—mencatat apa yang dilakukan dari awal hingga akhir tanpa benang merah yang mengikat. Sebaliknya, menulis sebagai "argumen" berarti menyusun setiap paragraf, data, dan uji statistik secara strategis untuk mendukung atau menyanggah satu klaim sentral yang bermuara pada kontribusi spesifik.
+>
+> Menerapkan urutan penulisan (Method → Results → Discussion → Introduction) secara drastis mencegah bias kognitif. Dengan mengunci fakta objektif (Method & Results) di awal, interpretasi data di tahap Discussion menjadi lebih murni dan rasional. Introduction kemudian dirakit paling akhir semata-mata untuk membingkai fenomena yang paling relevan dengan temuan aktual, mencegah janji berlebihan di bab pendahuluan yang tidak sanggup dipenuhi oleh data di bab akhir.

@@ -109,13 +109,13 @@ Kumpulkan hasil dari WS-02 sampai WS-07 menjadi satu ringkasan proposal.
 
 | Komponen | Sumber | Isi (1-2 kalimat) |
 |----------|--------|-------------------|
-| Problem Statement | WS-02 | *Contoh: Sistem rekomendasi memiliki akurasi tinggi (RMSE 0.87) tetapi satisfaction score rendah (45/100). Gap antara metrik teknis dan kepuasan pengguna belum diteliti.* |
-| Gap | WS-03 | *Contoh: Tidak ada studi yang mengintegrasikan collaborative filtering dengan user-context signals untuk meningkatkan satisfaction.* |
-| RQ | WS-04 | *Contoh: Apakah penambahan context-aware signals pada collaborative filtering meningkatkan satisfaction score tanpa menurunkan RMSE?* |
-| Hipotesis | WS-04 | *Contoh: H₁: Sistem CF+context menghasilkan satisfaction ≥ 70/100 dengan RMSE ≤ 0.90 dibanding baseline CF murni.* |
-| Variabel & Metrik | WS-05 | *Contoh: IV = jenis sistem (CF vs CF+context); DV = satisfaction score (skala 0-100) + RMSE (regresi).* |
-| Sistem | WS-06 | |
-| Desain Eksperimen | WS-07 | |
+| Problem Statement | WS-02 | Penggunaan aplikasi *web browser* dalam skenario *multi-tab* memicu konsumsi kapasitas RAM berlebih yang mengakibatkan penurunan performa sistem (lag/hang) bagi pengguna perangkat berspesifikasi standar . |
+| Gap | WS-03 | Terdapat kesenjangan data evaluatif empiris mengenai perbedaan efektivitas reduksi memori nyata antara fitur *Memory Saver* Google Chrome dan *Tab Unloading* Mozilla Firefox saat berada dalam kondisi beban kerja yang identik . |
+| RQ | WS-04 | Apakah fitur *Memory Saver* pada Google Chrome menghasilkan retensi kapasitas memori RAM yang lebih besar dibandingkan fitur *Tab Unloading* pada Mozilla Firefox saat menangani 35 tab pasif ? |
+| Hipotesis | WS-04 | Google Chrome dengan fitur *Memory Saver* diduga mampu membebaskan kapasitas RAM lebih besar dibandingkan Mozilla Firefox pada pengujian 35 tab pasif . |
+| Variabel & Metrik | WS-05 | Variabel bebas (IV) adalah jenis arsitektur manajemen memori browser , variabel terikat (DV) adalah efisiensi resource , yang diukur dengan metrik kapasitas RAM terbebas (MB) dan kecepatan eksekusi (detik) . |
+| Sistem | WS-06 | Sistem instrumentasi menggunakan Windows Performance Monitor (PerfMon) terintegrasi untuk merekam log RAM sistem secara netral , didukung oleh Browser Internal Task Manager untuk memetakan alokasi memori pada level sub-proses internal . |
+| Desain Eksperimen | WS-07 | Eksperimen dirancang sebagai *comparison study* dengan skenario *3x repeated run* berupa pembukaan 35 tab identik kaya media . Pengujian membandingkan kondisi *Baseline* (Firefox Gecko) dan *Intervensi* (Chrome Chromium) setelah dibiarkan pasif selama 15 menit pada *clean session* . |
 
 ---
 
@@ -125,37 +125,35 @@ Verifikasi 6 koneksi kritis. Isi dengan merujuk tabel di Latihan 1.
 
 | Koneksi | Status | Bukti |
 |---------|--------|-------|
-| Problem → Gap | *Contoh: ✅ — gap muncul dari 15 paper Bab 3 yang tidak ada yang mengkombinasikan CF + context untuk satisfaction* | |
-| Gap → RQ | *Contoh: ✅ — RQ langsung menanyakan apakah CF+context meningkatkan satisfaction* | |
-| RQ → Hypothesis | *Contoh: ✅ — H₁ memprediksi satisfaction ≥ 70 dengan threshold RMSE ≤ 0.90* | |
-| Hypothesis → Metric | | |
-| Metric → System | | |
-| System → Experiment | | |
+| Problem → Gap | ✅ | Gap secara spesifik diturunkan dari masalah lonjakan utilisasi RAM akibat beban kerja *multi-tab*, di mana belum ada pengujian evaluatif terkontrol yang membandingkan reduksi memori secara empiris antara *Memory Saver* Chrome dan *Tab Unloading* Firefox. |
+| Gap → RQ | ✅ | RQ secara presisi menjawab gap dengan menanyakan apakah *Memory Saver* pada Chrome menghasilkan retensi memori lebih besar dibandingkan *Tab Unloading* pada Firefox saat menangani 35 tab pasif. |
+| RQ → Hypothesis | ✅ | Hipotesis secara langsung memprediksi jawaban empiris untuk RQ, yaitu Chrome diduga mampu membebaskan kapasitas RAM lebih besar pada pengujian 35 tab pasif. |
+| Hypothesis → Metric | ✅ | Klaim membebaskan kapasitas RAM pada hipotesis diukur secara mutlak menggunakan metrik volume memori RAM terbebas (Megabytes) dan kecepatan eksekusi (detik). |
+| Metric → System | ✅ | Pengambilan data metrik volume memori dan durasi eksekusi direkam oleh instrumen *Windows Performance Monitor* (PerfMon) dan *profiler* bawaan aplikasi secara objektif. |
+| System → Experiment | ✅ | Instrumen sistem *PerfMon* diaplikasikan langsung ke dalam skenario eksperimen *3x repeated run* dengan membuka 35 tab web di lingkungan *clean session* pada OS Windows 11 desktop. |
 
-**Koneksi mana yang paling lemah?** _______________________
-**Bagaimana cara memperkuatnya?**
-> ___________________________________________________
+**Koneksi mana yang paling lemah?** Koneksi Metric → System.
 
-**Konsistensi horizontal — apakah istilah dan scope konsisten?** [ ] Ya / [ ] Tidak
-> Jika tidak, di bagian mana terjadi inkonsistensi? _________
+**Bagaimana cara memperkuatnya?** Memastikan bahwa pengambilan metrik dari *Windows Performance Monitor* (di tingkat kernel OS) tersinkronisasi presisi dengan *Browser Internal Task Manager* agar tidak ada *delay* pencatatan yang memicu bias saat membandingkan alokasi memori antara arsitektur mesin *Chromium* dan *Gecko*.
+
+**Konsistensi horizontal — apakah istilah dan scope konsisten?** [x] Ya / [ ] Tidak
+> Terminologi utama seperti "35 tab pasif", "Memory Saver", "Tab Unloading", serta penggunaan metrik terukur "Megabytes" dan "detik" dipertahankan secara ajek dari perumusan masalah, hipotesis, hingga skenario desain eksperimen.
 
 ---
 
 ## Latihan 3 — Rubrik Self-Assessment
 
-Evaluasi proposal mini menggunakan rubrik.
-
 | Kriteria | Skor (1-3) | Justifikasi |
 |----------|-----------|-------------|
-| Koherensi | *Contoh: 2 — koneksi gap→RQ masih lemah karena gap belum cukup narrow* | |
-| Specificity | *Contoh: 3 — metrik (satisfaction 0-100, RMSE) sudah terdefinisi numerik* | |
-| Feasibility | | |
-| Rigor | | |
+| Koherensi | 3 | Semua 6 koneksi terhubung kuat; alur logis sangat jelas mulai dari fenomena perangkat lambat (lag) akibat konsumsi RAM hingga pengujian komparatif fitur pembekuan tab. |
+| Specificity | 3 | Variabel sudah sangat operasional dengan metrik pengukur kuantitatif yang terdefinisi secara mutlak, yaitu kapasitas RAM terbebas dalam Megabytes (MB) dan durasi pelepasan memori dalam hitungan detik. |
+| Feasibility | 3 | Desain eksperimen menggunakan instrumen bawaan sistem operasi (Windows PerfMon) yang realistis dan sangat layak untuk dieksekusi sesuai dengan timeline jadwal 8 fase kegiatan mingguan. |
+| Rigor | 3 | Pemilihan Mozilla Firefox (Gecko) dengan Tab Unloading sebagai kondisi Baseline sangat setara dan representatif untuk menguji efisiensi intervensi Google Chrome (Chromium) pada lingkungan repeated runs dan clean session yang identik. |
 
-**Skor total:** _____ / 12
+**Skor total:** 12 / 12
 
-**Apakah proposal siap untuk fase eksekusi?** [ ] Ya / [ ] Belum
-> Jika belum, apa yang perlu diperbaiki? __________________
+**Apakah proposal siap untuk fase eksekusi?** [x] Ya / [ ] Belum
+> Proposal sudah matang dan siap dieksekusi. Desain eksperimen (comparison study) beserta variabel terukurnya sudah didefinisikan dengan setup sistem operasional yang spesifik dan objektif (Windows 11, PerfMon), sehingga rancangan ini dapat langsung diimplementasikan ke tahap pengambilan data log.
 
 ---
 
@@ -163,8 +161,9 @@ Evaluasi proposal mini menggunakan rubrik.
 
 > Dari seluruh proses WS-01 sampai WS-08, bagian mana yang paling mudah dan paling sulit? Mengapa? Apa yang akan dilakukan berbeda jika mengulang dari awal?
 
-**Bagian termudah:** ____________________________________
-**Bagian tersulit:** ____________________________________
+**Bagian termudah:** Menentukan variabel dan metrik kuantitatif (WS-05). Hal ini karena metrik performa komputasi untuk efisiensi memori sangat absolut dan mudah didefinisikan secara operasional, yaitu menggunakan selisih kapasitas RAM terbebas (dalam hitungan Megabytes) dan durasi pelepasan (dalam detik).
+
+**Bagian tersulit:** Merancang mitigasi ancaman validitas (Threat Analysis) pada desain eksperimen (WS-07). Mengisolasi lingkungan pengujian dari *background noise* atau sub-proses latar belakang acak yang secara natural dieksekusi oleh kernel OS Windows 11 sangat menantang dan rentan memicu bias pada hasil pencatatan.
+
 **Yang akan dilakukan berbeda:**
-> ___________________________________________________
-> ___________________________________________________
+> Saya akan mengunci spesifikasi *environment* dan parameter *clean session* (WS-09) secara mendetail sejak perumusan masalah, alih-alih di tahap metodologi akhir. Dengan memetakan batasan perangkat keras dan sistem operasi sejak awal, proses penyusunan batasan validitas eksperimen dan pencarian referensi pustaka (*baseline* SOTA) akan menjadi jauh lebih tajam dan meminimalisasi revisi ulang pada alur arsitektur pengujian.
